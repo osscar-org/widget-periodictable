@@ -1,8 +1,18 @@
 # widget-periodictable
 
-A jupyter widget to select chemical elements from the periodic table.
+A jupyter widget to select chemical elements from the periodic table. This is a update version of the
+widget from:
+
+https://github.com/aiidalab/aiidalab-widget-periodictable
+
+,which support both Jupyter notebook and JupyterLab.
+
 
 ![periodic table](./periodictable.png)
+
+## Usage and try it on Binder
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/master?urlpath=%2Flab%2Ftree%2Fexamples%2Fintroduction.ipynb)
 
 ## Installation
 
