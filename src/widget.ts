@@ -94,7 +94,7 @@ class MCPTableView extends DOMWidgetView {
         return {"click .periodic-table-entry": "toggleElement"};
 }
 
-    toggleElement(event) {
+    toggleElement(event: any) {
         let classNames: object = _.map(event.target.classList, function(a){return a});
         let tempName: string = _.chain(classNames)
             .last()
