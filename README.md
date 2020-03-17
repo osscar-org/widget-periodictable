@@ -1,5 +1,7 @@
 # widget-periodictable
 
+![Build](https://github.com/osscar-org/widget-periodictable/workflows/Build/badge.svg)
+
 A jupyter widget to select chemical elements from the periodic table. This is a update version of the
 widget from:
 
