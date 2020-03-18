@@ -2,13 +2,13 @@ from setupbase import get_version
 from os.path import join as pjoin 
 import json 
 
-name = '../../widget_periodictable'
+name = 'widget_periodictable'
 
 version_py = get_version(pjoin(name, '_version.py'))  
 print(version_py)
 
 
-with open('../../package.json') as json_file:
+with open('package.json') as json_file:
     data = json.load(json_file)
 
 version_npm = data['version']
