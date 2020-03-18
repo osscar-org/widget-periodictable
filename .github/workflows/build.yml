@@ -21,8 +21,6 @@ jobs:
       with:
         python-version: '3.7'
         architecture: 'x64'
-      run: | 
-          python version_check.py  
     - name: Install dependencies
       run: python -m pip install jupyterlab==1.2.6
     - name: Build the extension
@@ -30,3 +28,6 @@ jobs:
         jlpm && jlpm run build
         jupyter labextension install .
         python -m jupyterlab.browser_check
+    - name: Check PyPi and NPM version 
+      run: | 
+        python version_check.py 
