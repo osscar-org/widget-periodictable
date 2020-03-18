@@ -30,3 +30,6 @@ jobs:
         python -m jupyterlab.browser_check
     - name: Check package version
       uses: technote-space/package-version-check-action@v1
+    - name: Check the PyPi and npm version
+      uses: python3 check_version.py 
+
