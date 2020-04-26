@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install jupyterlab==2.1.0
-        sudo apt install liblapacke
+        python -m pip install ipywidgets 
     - name: Build the extension
       run: |
         jlpm && jlpm run build
