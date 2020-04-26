@@ -8,18 +8,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04 
+    runs-on: ubuntu-latest 
     steps:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Install node
       uses: actions/setup-node@v1
       with:
-       node-version: '10.18'
+       node-version: '13.x'
     - name: Install Python
       uses: actions/setup-python@v1
       with:
-        python-version: '3.7'
+        python-version: '3.8'
         architecture: 'x64'
     - name: Install dependencies
       run: |
