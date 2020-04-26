@@ -9,9 +9,8 @@ TODO: Add module docstring
 """
 
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Int, List, Dict 
+from traitlets import Unicode, Int, List, Dict
 from ._frontend import module_name, module_version
-
 
 class PTableWidget(DOMWidget):
     """TODO: Add docstring here
@@ -25,4 +24,18 @@ class PTableWidget(DOMWidget):
     selected_elements = List([]).tag(sync=True)
     disabled_elements = List([]).tag(sync=True)
     display_names_replacements = Dict({}).tag(sync=True)
+    disabled_color = Unicode('gray').tag(sync=True)
+    states = Int(1).tag(sync=True)
+    selected_states = List([]).tag(sync=True)
+    selected_colors = List(["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]).tag(sync=True)
 
+    def __init__(self, states = 1):
+        super(PTableWidget, self).__init__()
+        self.states = states
+
+    def get_elements_by_state(self, state):
+        x = [];
+        for i, j in enumerate(self.selected_states):
+            if j == state:
+                x.append(self.selected_elements[i])
+        return x
