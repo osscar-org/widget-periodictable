@@ -29,9 +29,10 @@ class PTableWidget(DOMWidget):
     selected_states = List([]).tag(sync=True)
     selected_colors = List(["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]).tag(sync=True)
 
-    def __init__(self, states = 1):
+    def __init__(self, states = 1, disabled_color = 'gray'):
         super(PTableWidget, self).__init__()
         self.states = states
+        self.disabled_color = disabled_color 
 
     def get_elements_by_state(self, state):
         x = [];
