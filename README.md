@@ -37,6 +37,16 @@ the nbextension:
 ```bash
 jupyter nbextension enable --py [--sys-prefix|--user|--system] widget_periodictable
 ```
+
+## Selection and disable
+
+By clicking on the elements, one can select and disable the elements. The selected elements can be divided into different states with custom colors.
+One can obtain the element list by state.
+
+```bash
+PTable.get_elements_by_state(1)
+```
+
 # Acknowlegements
 
 We acknowledge support from:

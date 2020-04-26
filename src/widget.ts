@@ -89,7 +89,7 @@ class MCPTableView extends DOMWidgetView {
   '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
   'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)} ' +
   'else if (selectedElements.includes(elementName))   { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} %>" '+
-  'title="group: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} %>" ><% '+
+  'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} %>" ><% '+
   'print(displayNamesReplacements[elementName] || elementName); %></span>' +
   '<% } }; print("</div>"); } %>');
 
