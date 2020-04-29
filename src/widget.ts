@@ -87,8 +87,8 @@ class MCPTableView extends DOMWidgetView {
   ' { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> '+
   ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && ' +
   '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
-  'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)} ' +
-  'else if (selectedElements.includes(elementName))   { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} %>" '+
+  'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
+  'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(noselectColor)} %>" '+
   'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
   'else if (disabledElements.includes(elementName)){print("disabled");} else {print("noselcted");} %>" ><% '+
   'print(displayNamesReplacements[elementName] || elementName); %></span>' +
@@ -117,7 +117,6 @@ class MCPTableView extends DOMWidgetView {
     .value();
 
     var isOn = _.includes(classNames, 'elementOn');
-    var isDisabled = _.includes(classNames, "periodic-table-disabled");
     // If this button is disabled, do not do anything
     // (Actually, this function should not be triggered if the button
     // is disabled, this is just a safety measure)
@@ -128,12 +127,10 @@ class MCPTableView extends DOMWidgetView {
     // Check if we understood which element we are
     if (typeof elementName !== 'undefined') {
       var currentList = this.model.get('selected_elements');
-      var currentDisabledList = this.model.get('disabled_elements');
       var currentStatesList = this.model.get('selected_states');
       // NOTE! it is essential to duplicate the list,
       // otherwise the value will not be updated.
       var newList = currentList.slice();
-      var newDisabledList = currentDisabledList.slice();
       var newStatesList = currentStatesList.slice();
       var num = newList.indexOf(elementName);
 
@@ -145,15 +142,10 @@ class MCPTableView extends DOMWidgetView {
         }
         else{
           newList = _.without(newList, elementName);
-          newDisabledList.push(elementName);
           newStatesList.splice(num, 1);
           // Swap CSS state
           event.target.classList.remove('elementOn');
         }
-      }
-      else if (isDisabled) {
-        newDisabledList = _.without(newDisabledList, elementName);
-        event.target.classList.remove('periodic-table-disabled');
       }
       else {
         // add the element from the selected_elements
@@ -165,7 +157,6 @@ class MCPTableView extends DOMWidgetView {
 
       // Update the model (send back data to python)
       this.model.set('selected_elements', newList);
-      this.model.set('disabled_elements', newDisabledList);
       this.model.set('selected_states', newStatesList);
       this.touch();
     }
@@ -177,6 +168,7 @@ class MCPTableView extends DOMWidgetView {
     var selectedElements = this.model.get('selected_elements');
     var disabledElements = this.model.get('disabled_elements');
     var disabledColor = this.model.get('disabled_color');
+    var noselectColor = this.model.get('noselect_color');
     var selectedColors = this.model.get('selected_colors');
     var selectedStates = this.model.get('selected_states');
     var newSelectedElements = selectedElements.slice();
@@ -212,6 +204,7 @@ class MCPTableView extends DOMWidgetView {
       selectedElements: newSelectedElements,
       disabledElements: disabledElements,
       disabledColor: disabledColor,
+      noselectColor: noselectColor,
       selectedColors: newSelectedColors,
       selectedStates: newSelectedStates
     }) +

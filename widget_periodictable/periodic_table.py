@@ -25,14 +25,17 @@ class PTableWidget(DOMWidget):
     disabled_elements = List([]).tag(sync=True)
     display_names_replacements = Dict({}).tag(sync=True)
     disabled_color = Unicode('gray').tag(sync=True)
+    noselect_color = Unicode('pink').tag(sync=True)
     states = Int(1).tag(sync=True)
     selected_states = List([]).tag(sync=True)
     selected_colors = List([]).tag(sync=True)
 
-    def __init__(self, states = 1, disabled_color = 'gray', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]):
+
+    def __init__(self, states = 1, disabled_color = 'gray', noselect_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]):
         super(PTableWidget, self).__init__()
         self.states = states
         self.disabled_color = disabled_color
+        self.noselect_color = noselect_color
         self.selected_colors = selected_colors
 
         if len(selected_colors) < states:
