@@ -14,7 +14,7 @@ https://github.com/aiidalab/aiidalab-widget-periodictable
 
 ## Usage and try it on Binder
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/master?urlpath=%2Flab%2Ftree%2Fexamples%2Fintroduction.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/develop?urlpath=%2Flab%2Ftree%2Fexamples%2Fintroduction.ipynb)
 
 ## Installation
 
