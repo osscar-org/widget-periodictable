@@ -183,16 +183,20 @@ class MCPTableView extends DOMWidgetView {
 
     var selectedElementsLength = newSelectedElements.length;
     //         Remove disabled elements from the selectedElements list
-    //         newSelectedElements = _.difference(newSelectedElements, disabledElements);
+    newSelectedElements = _.difference(newSelectedElements, disabledElements);
     //         Remove unknown elements from the selectedElements list
-    //         newSelectedElements = _.intersection(newSelectedElements, elementList);
+    newSelectedElements = _.intersection(newSelectedElements, elementList);
     var changed = newSelectedElements.length != selectedElementsLength;
 
     //         call the update (to python) only if I actually removed/changed
     //         something
     if (changed) {
       //             Make a copy before setting
+      while (newSelectedElements.length > newSelectedStates.length){
+        newSelectedStates.push(0);
+      }
       this.model.set('selected_elements', newSelectedElements);
+      this.model.set('selected_states', newSelectedStates);
       this.touch();
     }
 
