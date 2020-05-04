@@ -1,7 +1,7 @@
 # widget-periodictable
 
 ![Build](https://github.com/osscar-org/widget-periodictable/workflows/Build/badge.svg?branch=develop)
-[![Documentation Status](https://readthedocs.org/projects/widget-periodictable/badge/?version=develop)](https://widget-periodictable.readthedocs.io/en/latest/?badge=develop)
+[![Documentation Status](https://readthedocs.org/projects/widget-periodictable/badge/?version=develop)](https://widget-periodictable.readthedocs.io/en/develop/?badge=develop)
 
 
 
