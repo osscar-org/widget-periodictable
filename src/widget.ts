@@ -88,10 +88,10 @@ class MCPTableView extends DOMWidgetView {
   ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && ' +
   '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
   'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
-  'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(noselectColor)} %>" '+
-  'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
-  'else if (disabledElements.includes(elementName)){print("disabled");} else {print("noselcted");} %>" ><% '+
-  'print(displayNamesReplacements[elementName] || elementName); %></span>' +
+  'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(unselectedColor)} %>" '+
+  // 'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
+  // 'else if (disabledElements.includes(elementName)){print("disabled");} else {print("unselected");} %>" ><% '+
+  '><% print(displayNamesReplacements[elementName] || elementName); %></span>' +
   '<% } }; print("</div>"); } %>');
 
   render() {
@@ -168,16 +168,20 @@ class MCPTableView extends DOMWidgetView {
     var selectedElements = this.model.get('selected_elements');
     var disabledElements = this.model.get('disabled_elements');
     var disabledColor = this.model.get('disabled_color');
-    var noselectColor = this.model.get('noselect_color');
+    var unselectedColor = this.model.get('unselected_color');
     var selectedColors = this.model.get('selected_colors');
     var selectedStates = this.model.get('selected_states');
     var newSelectedElements = selectedElements.slice();
     var newSelectedColors = selectedColors.slice();
     var newSelectedStates = selectedStates.slice();
 
+    if (newSelectedElements.length != newSelectedStates.length){
+      return;
+    };
+
     //         Here I want to clean up the two elements lists, to avoid
     //         to have unknown elements in the selectedElements, and
-    //         to remove disabledElements from the selectedElements list.
+    //         to remove disabled Elements from the selectedElements list.
     //         I use s variable to check if anything changed, so I send
     //         back the data to python only if needed
 
@@ -186,15 +190,17 @@ class MCPTableView extends DOMWidgetView {
     newSelectedElements = _.difference(newSelectedElements, disabledElements);
     //         Remove unknown elements from the selectedElements list
     newSelectedElements = _.intersection(newSelectedElements, elementList);
+
     var changed = newSelectedElements.length != selectedElementsLength;
 
     //         call the update (to python) only if I actually removed/changed
     //         something
     if (changed) {
       //             Make a copy before setting
-      while (newSelectedElements.length > newSelectedStates.length){
-        newSelectedStates.push(0);
-      }
+      // while (newSelectedElements.length > newSelectedStates.length){
+      //   newSelectedStates.push(0);
+      // };
+
       this.model.set('selected_elements', newSelectedElements);
       this.model.set('selected_states', newSelectedStates);
       this.touch();
@@ -208,7 +214,7 @@ class MCPTableView extends DOMWidgetView {
       selectedElements: newSelectedElements,
       disabledElements: disabledElements,
       disabledColor: disabledColor,
-      noselectColor: noselectColor,
+      unselectedColor: unselectedColor,
       selectedColors: newSelectedColors,
       selectedStates: newSelectedStates
     }) +
