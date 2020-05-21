@@ -9,7 +9,7 @@ TODO: Add module docstring
 """
 
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Int, List, Dict, observe
+from traitlets import Unicode, Int, List, Dict, observe, validate, TraitError
 from ._frontend import module_name, module_version
 from copy import deepcopy
 
@@ -44,11 +44,9 @@ class PTableWidget(DOMWidget):
             self.selected_colors = selected_colors + additional_colors * (1 + (states - len(selected_colors)) // len(additional_colors))
 
     def get_elements_by_state(self, state):
-        x = [];
-        for i, j in enumerate(self.selected_states):
-            if j == state:
-                x.append(self.selected_elements[i])
-        return x
+        if state >= self.states:
+            raise ValueError("The state is larger than the maxmum value.")
+        return [element for element, element_state in zip(self.selected_elements, self.selected_states) if element_state==state]
 
     def set_element_state(self, elementName, state):
         if state < self.states:
@@ -73,3 +71,12 @@ class PTableWidget(DOMWidget):
                 x.append(i)
                 y.append(0)
         self.selected_states = y
+
+    @validate('selected_states')
+    def _valid_states(self, proposal):
+        if len(proposal['value']) > len(self.selected_elements):
+            raise TraitError('The selected_states length is wrong')
+        elif len(proposal['value']) < len(self.selected_elements):
+            return proposal['value'] + [0 for i in range(len(self.selected_elements)-len(proposal['value']))]
+        else:
+            return proposal['value']
