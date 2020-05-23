@@ -28,10 +28,10 @@ var elementTable: string[][] = [
   ["K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co","Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr"],
   ["Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh","Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"],
   ["Cs", "Ba", "*", "Hf", "Ta", "W", "Re", "Os", "Ir","Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn"],
-  ["Fr", "Ra", "*", "Rf", "Db", "Sg", "Bh", "Hs", "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og"],
+  ["Fr", "Ra", "#", "Rf", "Db", "Sg", "Bh", "Hs", "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og"],
   ["", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", ""],
   ["", "", "*", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu","Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu"],
-  ["", "", "*", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr"]
+  ["", "", "#", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr"]
 ];
 
 // Flat list of elements, used for validation and cleaning up of the
@@ -81,7 +81,7 @@ class MCPTableView extends DOMWidgetView {
   // http://codebeerstartups.com/2012/12/how-to-improve-templates-in-backbone-js-learning-backbone-js/
   tableTemplate =  _.template( '<% for (let elementRow of elementTable)'+
   ' { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow)'+
-  ' { if ( (elementName === "") || (elementName == "*" ) ) { %>' +
+  ' { if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
   '  <span class="periodic-table-empty noselect"><%= elementName %></span>' + '<% } else { %>' +
   '  <span class="<% if (disabledElements.includes(elementName))' +
   ' { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> '+
@@ -99,7 +99,6 @@ class MCPTableView extends DOMWidgetView {
     this.rerenderScratch();
     // I bind on_change events
     this.model.on('change:selected_elements', this.rerenderScratch, this);
-    this.model.on('change:selected_states', this.rerenderScratch, this);
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
   }
@@ -127,11 +126,17 @@ class MCPTableView extends DOMWidgetView {
     // Check if we understood which element we are
     if (typeof elementName !== 'undefined') {
       var currentList = this.model.get('selected_elements');
-      var currentStatesList = this.model.get('selected_states');
       // NOTE! it is essential to duplicate the list,
       // otherwise the value will not be updated.
-      var newList = currentList.slice();
-      var newStatesList = currentStatesList.slice();
+
+      var newList = [];
+      var newStatesList = [];
+
+      for (let key in currentList){
+        newList.push(key);
+        newStatesList.push(currentList[key])
+      };
+
       var num = newList.indexOf(elementName);
 
       if (isOn) {
@@ -139,10 +144,12 @@ class MCPTableView extends DOMWidgetView {
 
         if (newStatesList[num] < states -1){
           newStatesList[num]++;
+          currentList[elementName] = newStatesList[num];
         }
         else{
           newList = _.without(newList, elementName);
           newStatesList.splice(num, 1);
+          delete currentList[elementName];
           // Swap CSS state
           event.target.classList.remove('elementOn');
         }
@@ -151,15 +158,20 @@ class MCPTableView extends DOMWidgetView {
         // add the element from the selected_elements
         newList.push(elementName);
         newStatesList.push(0);
+        currentList[elementName] = 0;
         // Swap CSS state
         event.target.classList.add('elementOn');
       }
 
       // Update the model (send back data to python)
-      this.model.set('selected_elements', newList);
-      this.model.set('selected_states', newStatesList);
+      // I have to make some changes, since there is some issue
+      // for Dict in Traitlets, which cannot triggle the update
+      this.model.set('selected_elements', {"test":100});
+      this.touch();
+      this.model.set('selected_elements', currentList);
       this.touch();
     }
+
   }
 
   rerenderScratch() {
@@ -170,10 +182,15 @@ class MCPTableView extends DOMWidgetView {
     var disabledColor = this.model.get('disabled_color');
     var unselectedColor = this.model.get('unselected_color');
     var selectedColors = this.model.get('selected_colors');
-    var selectedStates = this.model.get('selected_states');
-    var newSelectedElements = selectedElements.slice();
     var newSelectedColors = selectedColors.slice();
-    var newSelectedStates = selectedStates.slice();
+
+    var newSelectedElements = [];
+    var newSelectedStates = [];
+
+    for (let key in selectedElements){
+      newSelectedElements.push(key);
+      newSelectedStates.push(selectedElements[key])
+    };
 
     if (newSelectedElements.length != newSelectedStates.length){
       return;
@@ -201,8 +218,7 @@ class MCPTableView extends DOMWidgetView {
       //   newSelectedStates.push(0);
       // };
 
-      this.model.set('selected_elements', newSelectedElements);
-      this.model.set('selected_states', newSelectedStates);
+      this.model.set('selected_elements', selectedElements);
       this.touch();
     }
 

@@ -15,9 +15,9 @@ Besides, elements can be disabled by calling the Python variable
 Traitlets
 ************
 
-* **selected_element** : The list of the selected elements.
-* **selected_colors** : The list of the colors of the selected elements.
-* **selected_states** : The list of the states of the selected elements.
+* **selected_element** : The dictionary of the selected elements with their states.
+* **states** : The number of states for the periodic table.
+* **selected_colors** : The colors of the selected elements.
 * **selected_disabled** : The list of the disabled elements.
 
 Acknowledges
