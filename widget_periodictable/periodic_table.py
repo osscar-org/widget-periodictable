@@ -39,7 +39,7 @@ class PTableWidget(DOMWidget):
         "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og", "La", "Ce", "Pr",
         "Nd", "Pm", "Sm", "Eu","Gd",  "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu","Ac",
         "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk",  "Cf", "Es", "Fm", "Md", "No", "Lr"
-    ]);
+    ]).tag(sync=True) 
 
     def __init__(self, states = 1, selected_elements = {}, disabled_color = 'gray', unselected_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]):
         super(PTableWidget, self).__init__()
