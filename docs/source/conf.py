@@ -203,6 +203,6 @@ def setup(app):
     def add_scripts(app):
         for fname in ['helper.js', 'embed-bundle.js']:
             if not os.path.exists(os.path.join(here, '_static', fname)):
-                app.warn('missing javascript file: %s' % fname)
+                print('missing javascript file: %s' % fname)
             app.add_js_file(fname)
     app.connect('builder-inited', add_scripts)
