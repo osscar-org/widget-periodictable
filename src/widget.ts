@@ -116,10 +116,10 @@ class MCPTableView extends DOMWidgetView {
     .value();
 
     var isOn = _.includes(classNames, 'elementOn');
+    var isDisabled = _.includes(classNames, "periodic-table-disabled");
     // If this button is disabled, do not do anything
     // (Actually, this function should not be triggered if the button
     // is disabled, this is just a safety measure)
-    // if (isDisabled) return;
 
     let states = this.model.get("states");
 
@@ -154,7 +154,7 @@ class MCPTableView extends DOMWidgetView {
           event.target.classList.remove('elementOn');
         }
       }
-      else {
+      else if (!isDisabled) {
         // add the element from the selected_elements
         newList.push(elementName);
         newStatesList.push(0);
@@ -163,10 +163,14 @@ class MCPTableView extends DOMWidgetView {
         event.target.classList.add('elementOn');
       }
 
+      else{
+        return;
+      }
+
       // Update the model (send back data to python)
       // I have to make some changes, since there is some issue
       // for Dict in Traitlets, which cannot triggle the update
-      this.model.set('selected_elements', {"H": 0});
+      this.model.set('selected_elements', {"Du": 0});
       this.touch();
       this.model.set('selected_elements', currentList);
       this.touch();
@@ -186,6 +190,8 @@ class MCPTableView extends DOMWidgetView {
 
     var newSelectedElements = [];
     var newSelectedStates = [];
+
+    if ('Du' in selectedElements) return;
 
     for (let key in selectedElements){
       newSelectedElements.push(key);
@@ -217,6 +223,12 @@ class MCPTableView extends DOMWidgetView {
       // while (newSelectedElements.length > newSelectedStates.length){
       //   newSelectedStates.push(0);
       // };
+
+      for (let key in selectedElements){
+          if (!newSelectedElements.includes(key)){
+            delete selectedElements[key];
+          }
+      };
 
       this.model.set('selected_elements', selectedElements);
       this.touch();

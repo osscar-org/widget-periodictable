@@ -39,12 +39,13 @@ class PTableWidget(DOMWidget):
         "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og", "La", "Ce", "Pr",
         "Nd", "Pm", "Sm", "Eu","Gd",  "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu","Ac",
         "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk",  "Cf", "Es", "Fm", "Md", "No", "Lr"
-    ]).tag(sync=True) 
+    ]).tag(sync=True)
 
-    def __init__(self, states = 1, selected_elements = {}, disabled_color = 'gray', unselected_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]):
+    def __init__(self, states = 1, selected_elements = {}, disabled_elements = [], disabled_color = 'gray', unselected_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]):
         super(PTableWidget, self).__init__()
         self.states = states
         self.disabled_color = disabled_color
+        self.disabled_elements = disabled_elements
         self.unselected_color = unselected_color
         self.selected_colors = selected_colors
         self.selected_elements = selected_elements
@@ -67,11 +68,17 @@ class PTableWidget(DOMWidget):
     @validate('selected_elements')
     def _selectedElements_change(self, proposal):
         for x, y in proposal['value'].items():
-            if x not in self.allElements:
+            if x not in self.allElements and x != 'Du':
                 raise TraitError('Element not found')
             if not isinstance(y, int) or y not in range(self.states):
                 raise TraitError('State value is wrong')
         return proposal['value']
+
+    @observe('disabled_elements')
+    def _disabledList_change(self, change):
+        for i in change['new']:
+            if i in self.selected_elements:
+                del self.selected_elements[i]
 
     @observe('states')
     def _states_change(self, change):
