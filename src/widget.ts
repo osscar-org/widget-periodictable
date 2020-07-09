@@ -169,7 +169,7 @@ class MCPTableView extends DOMWidgetView {
 
       // Update the model (send back data to python)
       // I have to make some changes, since there is some issue
-      // for Dict in Traitlets, which cannot triggle the update
+      // for Dict in Traitlets, which cannot trigger the update
       this.model.set('selected_elements', {"Du": 0});
       this.touch();
       this.model.set('selected_elements', currentList);
