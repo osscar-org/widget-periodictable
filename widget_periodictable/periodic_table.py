@@ -14,7 +14,7 @@ from ._frontend import module_name, module_version
 from copy import deepcopy
 
 class PTableWidget(DOMWidget):
-    """TODO: Add docstring here
+    """Periodic Table Widget
     """
     _model_name = Unicode('MCPTableModel').tag(sync=True)
     _model_module = Unicode(module_name).tag(sync=True)
