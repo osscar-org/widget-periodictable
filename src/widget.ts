@@ -28,10 +28,10 @@ var elementTable: string[][] = [
   ["K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co","Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr"],
   ["Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh","Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"],
   ["Cs", "Ba", "*", "Hf", "Ta", "W", "Re", "Os", "Ir","Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn"],
-  ["Fr", "Ra", "*", "Rf", "Db", "Sg", "Bh", "Hs", "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og"],
+  ["Fr", "Ra", "#", "Rf", "Db", "Sg", "Bh", "Hs", "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og"],
   ["", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", ""],
   ["", "", "*", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu","Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu"],
-  ["", "", "*", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr"]
+  ["", "", "#", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr"]
 ];
 
 // Flat list of elements, used for validation and cleaning up of the
@@ -81,17 +81,17 @@ class MCPTableView extends DOMWidgetView {
   // http://codebeerstartups.com/2012/12/how-to-improve-templates-in-backbone-js-learning-backbone-js/
   tableTemplate =  _.template( '<% for (let elementRow of elementTable)'+
   ' { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow)'+
-  ' { if ( (elementName === "") || (elementName == "*" ) ) { %>' +
+  ' { if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
   '  <span class="periodic-table-empty noselect"><%= elementName %></span>' + '<% } else { %>' +
   '  <span class="<% if (disabledElements.includes(elementName))' +
   ' { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> '+
   ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && ' +
   '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
   'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
-  'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(noselectColor)} %>" '+
-  'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
-  'else if (disabledElements.includes(elementName)){print("disabled");} else {print("noselcted");} %>" ><% '+
-  'print(displayNamesReplacements[elementName] || elementName); %></span>' +
+  'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(unselectedColor)} %>" '+
+  // 'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
+  // 'else if (disabledElements.includes(elementName)){print("disabled");} else {print("unselected");} %>" ><% '+
+  '><% print(displayNamesReplacements[elementName] || elementName); %></span>' +
   '<% } }; print("</div>"); } %>');
 
   render() {
@@ -99,7 +99,6 @@ class MCPTableView extends DOMWidgetView {
     this.rerenderScratch();
     // I bind on_change events
     this.model.on('change:selected_elements', this.rerenderScratch, this);
-    this.model.on('change:selected_states', this.rerenderScratch, this);
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
   }
@@ -117,21 +116,27 @@ class MCPTableView extends DOMWidgetView {
     .value();
 
     var isOn = _.includes(classNames, 'elementOn');
+    var isDisabled = _.includes(classNames, "periodic-table-disabled");
     // If this button is disabled, do not do anything
     // (Actually, this function should not be triggered if the button
     // is disabled, this is just a safety measure)
-    // if (isDisabled) return;
 
     let states = this.model.get("states");
 
     // Check if we understood which element we are
     if (typeof elementName !== 'undefined') {
       var currentList = this.model.get('selected_elements');
-      var currentStatesList = this.model.get('selected_states');
       // NOTE! it is essential to duplicate the list,
       // otherwise the value will not be updated.
-      var newList = currentList.slice();
-      var newStatesList = currentStatesList.slice();
+
+      var newList = [];
+      var newStatesList = [];
+
+      for (let key in currentList){
+        newList.push(key);
+        newStatesList.push(currentList[key])
+      };
+
       var num = newList.indexOf(elementName);
 
       if (isOn) {
@@ -139,27 +144,38 @@ class MCPTableView extends DOMWidgetView {
 
         if (newStatesList[num] < states -1){
           newStatesList[num]++;
+          currentList[elementName] = newStatesList[num];
         }
         else{
           newList = _.without(newList, elementName);
           newStatesList.splice(num, 1);
+          delete currentList[elementName];
           // Swap CSS state
           event.target.classList.remove('elementOn');
         }
       }
-      else {
+      else if (!isDisabled) {
         // add the element from the selected_elements
         newList.push(elementName);
         newStatesList.push(0);
+        currentList[elementName] = 0;
         // Swap CSS state
         event.target.classList.add('elementOn');
       }
 
+      else{
+        return;
+      }
+
       // Update the model (send back data to python)
-      this.model.set('selected_elements', newList);
-      this.model.set('selected_states', newStatesList);
+      // I have to make some changes, since there is some issue
+      // for Dict in Traitlets, which cannot trigger the update
+      this.model.set('selected_elements', {"Du": 0});
+      this.touch();
+      this.model.set('selected_elements', currentList);
       this.touch();
     }
+
   }
 
   rerenderScratch() {
@@ -168,16 +184,27 @@ class MCPTableView extends DOMWidgetView {
     var selectedElements = this.model.get('selected_elements');
     var disabledElements = this.model.get('disabled_elements');
     var disabledColor = this.model.get('disabled_color');
-    var noselectColor = this.model.get('noselect_color');
+    var unselectedColor = this.model.get('unselected_color');
     var selectedColors = this.model.get('selected_colors');
-    var selectedStates = this.model.get('selected_states');
-    var newSelectedElements = selectedElements.slice();
     var newSelectedColors = selectedColors.slice();
-    var newSelectedStates = selectedStates.slice();
+
+    var newSelectedElements = [];
+    var newSelectedStates = [];
+
+    if ('Du' in selectedElements) return;
+
+    for (let key in selectedElements){
+      newSelectedElements.push(key);
+      newSelectedStates.push(selectedElements[key])
+    };
+
+    if (newSelectedElements.length != newSelectedStates.length){
+      return;
+    };
 
     //         Here I want to clean up the two elements lists, to avoid
     //         to have unknown elements in the selectedElements, and
-    //         to remove disabledElements from the selectedElements list.
+    //         to remove disabled Elements from the selectedElements list.
     //         I use s variable to check if anything changed, so I send
     //         back the data to python only if needed
 
@@ -186,17 +213,24 @@ class MCPTableView extends DOMWidgetView {
     newSelectedElements = _.difference(newSelectedElements, disabledElements);
     //         Remove unknown elements from the selectedElements list
     newSelectedElements = _.intersection(newSelectedElements, elementList);
+
     var changed = newSelectedElements.length != selectedElementsLength;
 
     //         call the update (to python) only if I actually removed/changed
     //         something
     if (changed) {
       //             Make a copy before setting
-      while (newSelectedElements.length > newSelectedStates.length){
-        newSelectedStates.push(0);
-      }
-      this.model.set('selected_elements', newSelectedElements);
-      this.model.set('selected_states', newSelectedStates);
+      // while (newSelectedElements.length > newSelectedStates.length){
+      //   newSelectedStates.push(0);
+      // };
+
+      for (let key in selectedElements){
+          if (!newSelectedElements.includes(key)){
+            delete selectedElements[key];
+          }
+      };
+
+      this.model.set('selected_elements', selectedElements);
       this.touch();
     }
 
@@ -208,7 +242,7 @@ class MCPTableView extends DOMWidgetView {
       selectedElements: newSelectedElements,
       disabledElements: disabledElements,
       disabledColor: disabledColor,
-      noselectColor: noselectColor,
+      unselectedColor: unselectedColor,
       selectedColors: newSelectedColors,
       selectedStates: newSelectedStates
     }) +
