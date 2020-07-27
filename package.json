@@ -77,7 +77,8 @@
     "ts-loader": "^5.2.1",
     "typescript": "~3.8",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "jquery": "^3.5.1"
   },
   "jupyterlab": {
     "extension": "lib/plugin"

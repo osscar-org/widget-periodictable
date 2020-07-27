@@ -10,6 +10,7 @@ import {
 } from './version';
 
 import * as _ from 'underscore';
+import $ from 'jquery';
 
 // Import the CSS
 import '../css/ptable.css';
@@ -97,10 +98,16 @@ class MCPTableView extends DOMWidgetView {
   render() {
     // I render the widget
     this.rerenderScratch();
+
+    $(document).ready(() =>{
+      this.renderBorder();
+    }); 
+
     // I bind on_change events
     this.model.on('change:selected_elements', this.rerenderScratch, this);
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
+    this.model.on('change:border_color', this.renderBorder, this);
   }
 
   events(): {[e: string]: string} {
@@ -249,4 +256,14 @@ class MCPTableView extends DOMWidgetView {
     '</div>';
   }
 
+  renderBorder(){
+    const a = document.getElementsByClassName('periodic-table-entry');
+    const color = this.model.get('border_color');
+
+    for (let i = 0; i < a.length; i++) {
+      (a[i] as HTMLElement).style.border = "1px solid " + color;
+      
+    }
+
+  }
 }
