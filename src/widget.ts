@@ -10,6 +10,7 @@ import {
 } from './version';
 
 import * as _ from 'underscore';
+import $ from 'jquery';
 
 // Import the CSS
 import '../css/ptable.css';
@@ -82,12 +83,12 @@ class MCPTableView extends DOMWidgetView {
   tableTemplate =  _.template( '<% for (let elementRow of elementTable)'+
   ' { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow)'+
   ' { if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
-  '  <span class="periodic-table-empty noselect"><%= elementName %></span>' + '<% } else { %>' +
+  '  <span class="periodic-table-empty noselect" style="width: <%= elementWidth %>; height: <%= elementWidth %>;"><%= elementName %></span>' + '<% } else { %>' +
   '  <span class="<% if (disabledElements.includes(elementName))' +
   ' { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> '+
   ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && ' +
   '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
-  'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
+  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; border-color: <%= borderColor %>; background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
   'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(unselectedColor)} %>" '+
   // 'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
   // 'else if (disabledElements.includes(elementName)){print("disabled");} else {print("unselected");} %>" ><% '+
@@ -97,10 +98,13 @@ class MCPTableView extends DOMWidgetView {
   render() {
     // I render the widget
     this.rerenderScratch();
+
     // I bind on_change events
     this.model.on('change:selected_elements', this.rerenderScratch, this);
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
+    this.model.on('change:border_color', this.rerenderScratch, this);
+    this.model.on('change:width', this.rerenderScratch, this);
   }
 
   events(): {[e: string]: string} {
@@ -187,6 +191,8 @@ class MCPTableView extends DOMWidgetView {
     var unselectedColor = this.model.get('unselected_color');
     var selectedColors = this.model.get('selected_colors');
     var newSelectedColors = selectedColors.slice();
+    var elementWidth = this.model.get('width');
+    var borderColor = this.model.get('border_color');
 
     var newSelectedElements = [];
     var newSelectedStates = [];
@@ -244,9 +250,48 @@ class MCPTableView extends DOMWidgetView {
       disabledColor: disabledColor,
       unselectedColor: unselectedColor,
       selectedColors: newSelectedColors,
-      selectedStates: newSelectedStates
+      selectedStates: newSelectedStates,
+      elementWidth: elementWidth,
+      borderColor: borderColor
     }) +
     '</div>';
   }
 
+  renderBorder(){
+    const a = document.getElementsByClassName('periodic-table-entry');
+    const color = this.model.get('border_color');
+
+    for (let i = 0; i < a.length; i++) {
+      (a[i] as HTMLElement).style.border = "1px solid " + color;
+      
+    }
+
+  }
+
+  renderWidth(){
+    const a = document.getElementsByClassName('periodic-table-entry');
+    const b = document.getElementsByClassName('periodic-table-disabled');
+    const c = document.getElementsByClassName('periodic-table-empty');
+    const w = this.model.get('width');
+    var fontSize: Number = 14.00;
+
+    fontSize = Number.parseFloat(w.slice(0, -2))/38.00*14.00;
+    $('body').css('font-size', String(fontSize)+'px');
+    // document.getElementsByTagName('body')[0].style.fontSize = String(fontSize) + "px";
+
+    for (let i = 0; i < a.length; i++) {
+      (a[i] as HTMLElement).style.width = w;
+      (a[i] as HTMLElement).style.height = w;
+    }
+
+    for (let i = 0; i < b.length; i++) {
+      (b[i] as HTMLElement).style.width = w;
+      (b[i] as HTMLElement).style.height = w;
+    }
+
+    for (let i = 0; i < c.length; i++) {
+      (c[i] as HTMLElement).style.width = w;
+      (c[i] as HTMLElement).style.height = w;
+    }
+  }
 }
