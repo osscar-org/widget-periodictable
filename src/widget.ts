@@ -101,6 +101,7 @@ class MCPTableView extends DOMWidgetView {
 
     $(document).ready(() =>{
       this.renderBorder();
+      this.renderWidth();
     }); 
 
     // I bind on_change events
@@ -108,6 +109,7 @@ class MCPTableView extends DOMWidgetView {
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
     this.model.on('change:border_color', this.renderBorder, this);
+    this.model.on('change:width', this.renderWidth, this);
   }
 
   events(): {[e: string]: string} {
@@ -265,5 +267,32 @@ class MCPTableView extends DOMWidgetView {
       
     }
 
+  }
+
+  renderWidth(){
+    const a = document.getElementsByClassName('periodic-table-entry');
+    const b = document.getElementsByClassName('periodic-table-disabled');
+    const c = document.getElementsByClassName('periodic-table-empty');
+    const w = this.model.get('width');
+    var fontSize: Number = 14.00;
+
+    fontSize = Number.parseFloat(w.slice(0, -2))/38.00*14.00;
+    $('body').css('font-size', String(fontSize)+'px');
+    // document.getElementsByTagName('body')[0].style.fontSize = String(fontSize) + "px";
+
+    for (let i = 0; i < a.length; i++) {
+      (a[i] as HTMLElement).style.width = w;
+      (a[i] as HTMLElement).style.height = w;
+    }
+
+    for (let i = 0; i < b.length; i++) {
+      (b[i] as HTMLElement).style.width = w;
+      (b[i] as HTMLElement).style.height = w;
+    }
+
+    for (let i = 0; i < c.length; i++) {
+      (c[i] as HTMLElement).style.width = w;
+      (c[i] as HTMLElement).style.height = w;
+    }
   }
 }

@@ -31,6 +31,7 @@ class PTableWidget(DOMWidget):
     selected_colors = List([]).tag(sync=True)
     border_color = Unicode('#cc7777').tag(sync=True)
     disabled = Bool(False, help="Enable or disable user changes.").tag(sync=True)
+    width = Unicode('38px').tag(sync=True)
     allElements = List([
         "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg",
         "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe",
@@ -43,7 +44,7 @@ class PTableWidget(DOMWidget):
         "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk",  "Cf", "Es", "Fm", "Md", "No", "Lr"
     ]).tag(sync=True)
 
-    def __init__(self, states = 1, selected_elements = {}, disabled_elements = [], disabled_color = 'gray', unselected_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"], border_color = "#cc7777"):
+    def __init__(self, states = 1, selected_elements = {}, disabled_elements = [], disabled_color = 'gray', unselected_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"], border_color = "#cc7777", width = "38px"):
         super(PTableWidget, self).__init__()
         self.states = states
         self.disabled_color = disabled_color
@@ -52,6 +53,7 @@ class PTableWidget(DOMWidget):
         self.selected_colors = selected_colors
         self.selected_elements = selected_elements
         self.border_color = border_color
+        self.width = width 
 
         if len(selected_colors) < states:
             additional_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]
