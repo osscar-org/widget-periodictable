@@ -9,4 +9,4 @@ Information about the frontend package of the widgets.
 """
 
 module_name = "widget-periodictable"
-module_version = "^2.1.1"
+module_version = "^2.1.2"
