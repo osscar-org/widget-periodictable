@@ -1,6 +1,6 @@
 {
   "name": "widget-periodictable",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A jupyter widget to select chemical elements from the periodic table.",
   "keywords": [
     "jupyter",

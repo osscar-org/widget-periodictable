@@ -83,12 +83,12 @@ class MCPTableView extends DOMWidgetView {
   tableTemplate =  _.template( '<% for (let elementRow of elementTable)'+
   ' { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow)'+
   ' { if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
-  '  <span class="periodic-table-empty noselect"><%= elementName %></span>' + '<% } else { %>' +
+  '  <span class="periodic-table-empty noselect" style="width: <%= elementWidth %>; height: <%= elementWidth %>;"><%= elementName %></span>' + '<% } else { %>' +
   '  <span class="<% if (disabledElements.includes(elementName))' +
   ' { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> '+
   ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && ' +
   '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
-  'style="background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
+  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; border-color: <%= borderColor %>; background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
   'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(unselectedColor)} %>" '+
   // 'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
   // 'else if (disabledElements.includes(elementName)){print("disabled");} else {print("unselected");} %>" ><% '+
@@ -103,8 +103,8 @@ class MCPTableView extends DOMWidgetView {
     this.model.on('change:selected_elements', this.rerenderScratch, this);
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
-    this.model.on('change:border_color', this.renderBorder, this);
-    this.model.on('change:width', this.renderWidth, this);
+    this.model.on('change:border_color', this.rerenderScratch, this);
+    this.model.on('change:width', this.rerenderScratch, this);
   }
 
   events(): {[e: string]: string} {
@@ -191,6 +191,8 @@ class MCPTableView extends DOMWidgetView {
     var unselectedColor = this.model.get('unselected_color');
     var selectedColors = this.model.get('selected_colors');
     var newSelectedColors = selectedColors.slice();
+    var elementWidth = this.model.get('width');
+    var borderColor = this.model.get('border_color');
 
     var newSelectedElements = [];
     var newSelectedStates = [];
@@ -248,14 +250,11 @@ class MCPTableView extends DOMWidgetView {
       disabledColor: disabledColor,
       unselectedColor: unselectedColor,
       selectedColors: newSelectedColors,
-      selectedStates: newSelectedStates
+      selectedStates: newSelectedStates,
+      elementWidth: elementWidth,
+      borderColor: borderColor
     }) +
     '</div>';
-
-    $(document).ready(() =>{
-      this.renderBorder();
-      this.renderWidth();
-    }); 
   }
 
   renderBorder(){
