@@ -99,11 +99,6 @@ class MCPTableView extends DOMWidgetView {
     // I render the widget
     this.rerenderScratch();
 
-    $(document).ready(() =>{
-      this.renderBorder();
-      this.renderWidth();
-    }); 
-
     // I bind on_change events
     this.model.on('change:selected_elements', this.rerenderScratch, this);
     this.model.on('change:disabled_elements', this.rerenderScratch, this);
@@ -256,6 +251,11 @@ class MCPTableView extends DOMWidgetView {
       selectedStates: newSelectedStates
     }) +
     '</div>';
+
+    $(document).ready(() =>{
+      this.renderBorder();
+      this.renderWidth();
+    }); 
   }
 
   renderBorder(){
