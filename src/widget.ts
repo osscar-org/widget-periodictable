@@ -126,6 +126,9 @@ class MCPTableView extends DOMWidgetView {
     // is disabled, this is just a safety measure)
 
     let states = this.model.get("states");
+    let disabled = this.model.get("disabled");
+
+    if (disabled == true) return;
 
     // Check if we understood which element we are
     if (typeof elementName !== 'undefined') {

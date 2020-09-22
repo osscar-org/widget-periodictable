@@ -88,13 +88,6 @@ class PTableWidget(DOMWidget):
             if i in self.selected_elements:
                 del self.selected_elements[i]
 
-    @observe('disabled')
-    def _disabled_change(self, change):
-        if change['new']:
-            self.disabled_elements = self.allElements
-        else:
-            self.disabled_elements = []
-
     @observe('states')
     def _states_change(self, change):
         if change['new'] < 1:

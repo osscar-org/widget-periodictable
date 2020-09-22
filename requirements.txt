@@ -3,4 +3,4 @@ ipywidgets==7.5.0
 appmode==0.7.0
 IPython==7.8.0
 jupyterlab==2.1.2
-widget-periodictable
+widget-periodictable==2.1.3
