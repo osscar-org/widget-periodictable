@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Install node
       uses: actions/setup-node@v1
       with:
        node-version: '13.x'
     - name: Install Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: '3.8'
         architecture: 'x64'
@@ -31,5 +31,4 @@ jobs:
         jupyter labextension install .
         python -m jupyterlab.browser_check
     - name: Check PyPi and NPM version
-      run: |
-        python version_check.py
+      run: python version_check.py
