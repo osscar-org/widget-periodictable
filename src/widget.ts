@@ -80,16 +80,25 @@ export
 class MCPTableView extends DOMWidgetView {
   // TODO: move template to external file to make it more readable, see
   // http://codebeerstartups.com/2012/12/how-to-improve-templates-in-backbone-js-learning-backbone-js/
-  tableTemplate =  _.template( '<% for (let elementRow of elementTable)'+
-  ' { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow)'+
-  ' { if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
-  '  <span class="periodic-table-empty noselect" style="width: <%= elementWidth %>; height: <%= elementWidth %>;"><%= elementName %></span>' + '<% } else { %>' +
-  '  <span class="<% if (disabledElements.includes(elementName))' +
-  ' { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> '+
-  ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && ' +
-  '(! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" '+
-  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; border-color: <%= borderColor %>; background-color: <% if (disabledElements.includes(elementName)) {print(disabledColor)}' +
-  'else if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedColors[selectedStates[i]]);} else{print(unselectedColor)} %>" '+
+  tableTemplate =  _.template( '<% for (let elementRow of elementTable) { '+
+  'print("<div class=\'periodic-table-row\'>"); ' +
+  'for (let elementName of elementRow) { '+
+  'if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
+  '  <span class="periodic-table-empty noselect" style="width: <%= elementWidth %>; height: <%= elementWidth %>;"><%= elementName %></span>' +
+  '<% } else { %>' +
+  '  <span class="<% if (disabledElements.includes(elementName)) { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> ' +
+  ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && (! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" ' +
+  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; border-color: <%= borderColor %>; ' +
+  'background-color: <% if (disabledElements.includes(elementName)) { color = disabledColor; } ' +
+  'else if (selectedElements.includes(elementName)) { ' +
+  'i = selectedElements.indexOf(elementName); color = selectedColors[selectedStates[i]]; ' +
+  '} else { color = unselectedColor; } ' +
+  'if (disabled) { colors = color.replace(/[^\\d,]/g, "").split(","); ' +
+  'red = Math.round(255 - 0.38 * ( 255 - parseInt(colors[0], 10) )); ' +
+  'green = Math.round(255 - 0.38 * ( 255 - parseInt(colors[1], 10) )); ' +
+  'blue = Math.round(255 - 0.38 * ( 255 - parseInt(colors[2], 10) )); ' +
+  'print("rgb(" + red.toString(10) + "," + green.toString(10) + "," + blue.toString(10) + ")"); ' +
+  '} else { print(color); } %>"' +
   // 'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
   // 'else if (disabledElements.includes(elementName)){print("disabled");} else {print("unselected");} %>" ><% '+
   '><% print(displayNamesReplacements[elementName] || elementName); %></span>' +
@@ -105,6 +114,7 @@ class MCPTableView extends DOMWidgetView {
     this.model.on('change:display_names_replacements', this.rerenderScratch, this);
     this.model.on('change:border_color', this.rerenderScratch, this);
     this.model.on('change:width', this.rerenderScratch, this);
+    this.model.on('change:disabled', this.rerenderScratch, this);
   }
 
   events(): {[e: string]: string} {
@@ -128,7 +138,7 @@ class MCPTableView extends DOMWidgetView {
     let states = this.model.get("states");
     let disabled = this.model.get("disabled");
 
-    if (disabled == true) return;
+    if (disabled) return;
 
     // Check if we understood which element we are
     if (typeof elementName !== 'undefined') {
@@ -255,7 +265,8 @@ class MCPTableView extends DOMWidgetView {
       selectedColors: newSelectedColors,
       selectedStates: newSelectedStates,
       elementWidth: elementWidth,
-      borderColor: borderColor
+      borderColor: borderColor,
+      disabled: this.model.get('disabled')
     }) +
     '</div>';
   }

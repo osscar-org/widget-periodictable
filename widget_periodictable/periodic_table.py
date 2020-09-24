@@ -8,14 +8,18 @@
 TODO: Add module docstring
 """
 
-from ipywidgets import DOMWidget, Layout
-from traitlets import Unicode, Int, List, Dict, observe, validate, TraitError, Dict, Bool
-from ._frontend import module_name, module_version
 from copy import deepcopy
 
+from ipywidgets import DOMWidget, Layout
+from traitlets import Unicode, Int, List, Dict, observe, validate, TraitError, Dict, Bool
+
+from ._frontend import module_name, module_version
+from .utils import color_as_rgb
+
+
 class PTableWidget(DOMWidget):
-    """Periodic Table Widget
-    """
+    """Periodic Table Widget """
+
     _model_name = Unicode('MCPTableModel').tag(sync=True)
     _model_module = Unicode(module_name).tag(sync=True)
     _model_module_version = Unicode(module_version).tag(sync=True)
@@ -72,6 +76,19 @@ class PTableWidget(DOMWidget):
         x = deepcopy(self.selected_elements)
         x[elementName] = state
         self.selected_elements = x
+
+    @validate('disabled_color', 'unselected_color')
+    def _color_change(self, proposal):
+        """Convert to rgb(X, Y, Z) type color"""
+        return color_as_rgb(proposal['value'])
+
+    @validate('selected_colors')
+    def _selectedColors_change(self, proposal):
+        """Convert to rgb(X, Y, Z) type color"""
+        res = []
+        for color in proposal['value']:
+            res.append(color_as_rgb(color))
+        return res
 
     @validate('selected_elements')
     def _selectedElements_change(self, proposal):
