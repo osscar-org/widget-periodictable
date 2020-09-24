@@ -93,6 +93,7 @@ setup_args = dict(
             'pytest>=3.6',
             'pytest-cov',
             'nbval',
+            'pre-commit',
         ],
         'examples': [
             # Any requirements for the examples to run
