@@ -64,25 +64,27 @@ class PTableWidget(DOMWidget):
 
     def __init__(
         self,
-        states=1,
-        selected_elements={},
-        disabled_elements=[],
-        disabled_color='gray',
-        unselected_color='pink',
-        selected_colors=_STANDARD_COLORS,
-        border_color="#cc7777",
-        width="38px",
+        states=None,
+        selected_elements=None,
+        disabled_elements=None,
+        disabled_color=None,
+        unselected_color=None,
+        selected_colors=None,
+        border_color=None,
+        width=None,
         layout=None,
     ):
         super(PTableWidget, self).__init__()
-        self.states = states
-        self.disabled_color = disabled_color
-        self.disabled_elements = disabled_elements
-        self.unselected_color = unselected_color
-        self.selected_colors = selected_colors
-        self.selected_elements = selected_elements
-        self.border_color = border_color
-        self.width = width
+        self.states = states if states else 1
+        self.selected_elements = selected_elements if selected_elements else {}
+        self.disabled_elements = disabled_elements if disabled_elements else []
+        self.disabled_color = disabled_color if disabled_color else 'gray'
+        self.unselected_color = unselected_color if unselected_color else 'pink'
+        self.selected_colors = (
+            selected_colors if selected_colors else self._STANDARD_COLORS
+        )
+        self.border_color = border_color if border_color else '#cc7777'
+        self.width = width if width else '38px'
 
         if layout is not None:
             self.layout = layout
