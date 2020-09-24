@@ -10,9 +10,14 @@ from os.path import join as pjoin
 
 
 from setupbase import (
-    create_cmdclass, install_npm, ensure_targets,
-    find_packages, combine_commands, ensure_python,
-    get_version, HERE
+    create_cmdclass,
+    install_npm,
+    ensure_targets,
+    find_packages,
+    combine_commands,
+    ensure_python,
+    get_version,
+    HERE,
 )
 
 from setuptools import setup
@@ -36,23 +41,18 @@ jstargets = [
     pjoin(HERE, 'lib', 'plugin.js'),
 ]
 
-package_data_spec = {
-    name: [
-        'nbextension/static/*.*js*',
-        'labextension/*.tgz'
-    ]
-}
+package_data_spec = {name: ['nbextension/static/*.*js*', 'labextension/*.tgz']}
 
 data_files_spec = [
-    ('share/jupyter/nbextensions/widget_periodictable',
-        nb_path, '*.js*'),
+    ('share/jupyter/nbextensions/widget_periodictable', nb_path, '*.js*'),
     ('share/jupyter/lab/extensions', lab_path, '*.tgz'),
-    ('etc/jupyter/nbconfig/notebook.d' , HERE, 'widget_periodictable.json')
+    ('etc/jupyter/nbconfig/notebook.d', HERE, 'widget_periodictable.json'),
 ]
 
 
-cmdclass = create_cmdclass('jsdeps', package_data_spec=package_data_spec,
-    data_files_spec=data_files_spec)
+cmdclass = create_cmdclass(
+    'jsdeps', package_data_spec=package_data_spec, data_files_spec=data_files_spec
+)
 cmdclass['jsdeps'] = combine_commands(
     install_npm(HERE, build_cmd='build:all'),
     ensure_targets(jstargets),
@@ -60,19 +60,19 @@ cmdclass['jsdeps'] = combine_commands(
 
 
 setup_args = dict(
-    name            = name,
-    description     = 'A jupyter widget to select chemical elements from the periodic table.',
-    version         = version,
-    scripts         = glob(pjoin('scripts', '*')),
-    cmdclass        = cmdclass,
-    packages        = find_packages(),
-    author          = 'Giovanni Pizzi and Dou Du',
-    author_email    = 'dou.du@epfl.ch',
-    url             = 'https://github.com/osscar-org/widget-periodictable',
-    license         = 'BSD',
-    platforms       = "Linux, Mac OS X, Windows",
-    keywords        = ['Jupyter', 'Widgets', 'IPython'],
-    classifiers     = [
+    name=name,
+    description='A jupyter widget to select chemical elements from the periodic table.',
+    version=version,
+    scripts=glob(pjoin('scripts', '*')),
+    cmdclass=cmdclass,
+    packages=find_packages(),
+    author='Giovanni Pizzi and Dou Du',
+    author_email='dou.du@epfl.ch',
+    url='https://github.com/osscar-org/widget-periodictable',
+    license='BSD',
+    platforms="Linux, Mac OS X, Windows",
+    keywords=['Jupyter', 'Widgets', 'IPython'],
+    classifiers=[
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',
@@ -84,11 +84,11 @@ setup_args = dict(
         'Programming Language :: Python :: 3.7',
         'Framework :: Jupyter',
     ],
-    include_package_data = True,
-    install_requires = [
+    include_package_data=True,
+    install_requires=[
         'ipywidgets>=7.0.0',
     ],
-    extras_require = {
+    extras_require={
         'test': [
             'pytest>=3.6',
             'pytest-cov',
@@ -109,8 +109,7 @@ setup_args = dict(
             'pypandoc',
         ],
     },
-    entry_points = {
-    },
+    entry_points={},
 )
 
 if __name__ == '__main__':

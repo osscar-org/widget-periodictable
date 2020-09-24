@@ -277,7 +277,6 @@ class MCPTableView extends DOMWidgetView {
 
     for (let i = 0; i < a.length; i++) {
       (a[i] as HTMLElement).style.border = "1px solid " + color;
-      
     }
 
   }

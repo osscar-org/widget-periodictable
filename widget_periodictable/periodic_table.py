@@ -11,7 +11,17 @@ TODO: Add module docstring
 from copy import deepcopy
 
 from ipywidgets import DOMWidget, Layout
-from traitlets import Unicode, Int, List, Dict, observe, validate, TraitError, Dict, Bool
+from traitlets import (
+    Unicode,
+    Int,
+    List,
+    Dict,
+    observe,
+    validate,
+    TraitError,
+    Dict,
+    Bool,
+)
 
 from ._frontend import module_name, module_version
 from .utils import color_as_rgb
@@ -36,19 +46,153 @@ class PTableWidget(DOMWidget):
     border_color = Unicode('#cc7777').tag(sync=True)
     disabled = Bool(False, help="Enable or disable user changes.").tag(sync=True)
     width = Unicode('38px').tag(sync=True)
-    allElements = List([
-        "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg",
-        "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe",
-        "Co","Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y",
-        "Zr", "Nb", "Mo",  "Tc", "Ru", "Rh","Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te",
-        "I", "Xe", "Cs", "Ba", "Hf", "Ta", "W", "Re", "Os", "Ir","Pt", "Au", "Hg", "Tl",
-        "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Rf", "Db", "Sg", "Bh", "Hs",
-        "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og", "La", "Ce", "Pr",
-        "Nd", "Pm", "Sm", "Eu","Gd",  "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu","Ac",
-        "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk",  "Cf", "Es", "Fm", "Md", "No", "Lr"
-    ]).tag(sync=True)
+    allElements = List(
+        [
+            "H",
+            "He",
+            "Li",
+            "Be",
+            "B",
+            "C",
+            "N",
+            "O",
+            "F",
+            "Ne",
+            "Na",
+            "Mg",
+            "Al",
+            "Si",
+            "P",
+            "S",
+            "Cl",
+            "Ar",
+            "K",
+            "Ca",
+            "Sc",
+            "Ti",
+            "V",
+            "Cr",
+            "Mn",
+            "Fe",
+            "Co",
+            "Ni",
+            "Cu",
+            "Zn",
+            "Ga",
+            "Ge",
+            "As",
+            "Se",
+            "Br",
+            "Kr",
+            "Rb",
+            "Sr",
+            "Y",
+            "Zr",
+            "Nb",
+            "Mo",
+            "Tc",
+            "Ru",
+            "Rh",
+            "Pd",
+            "Ag",
+            "Cd",
+            "In",
+            "Sn",
+            "Sb",
+            "Te",
+            "I",
+            "Xe",
+            "Cs",
+            "Ba",
+            "Hf",
+            "Ta",
+            "W",
+            "Re",
+            "Os",
+            "Ir",
+            "Pt",
+            "Au",
+            "Hg",
+            "Tl",
+            "Pb",
+            "Bi",
+            "Po",
+            "At",
+            "Rn",
+            "Fr",
+            "Ra",
+            "Rf",
+            "Db",
+            "Sg",
+            "Bh",
+            "Hs",
+            "Mt",
+            "Ds",
+            "Rg",
+            "Cn",
+            "Nh",
+            "Fi",
+            "Mc",
+            "Lv",
+            "Ts",
+            "Og",
+            "La",
+            "Ce",
+            "Pr",
+            "Nd",
+            "Pm",
+            "Sm",
+            "Eu",
+            "Gd",
+            "Tb",
+            "Dy",
+            "Ho",
+            "Er",
+            "Tm",
+            "Yb",
+            "Lu",
+            "Ac",
+            "Th",
+            "Pa",
+            "U",
+            "Np",
+            "Pu",
+            "Am",
+            "Cm",
+            "Bk",
+            "Cf",
+            "Es",
+            "Fm",
+            "Md",
+            "No",
+            "Lr",
+        ]
+    ).tag(sync=True)
 
-    def __init__(self, states = 1, selected_elements = {}, disabled_elements = [], disabled_color = 'gray', unselected_color = 'pink', selected_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"], border_color = "#cc7777", width = "38px", layout = None):
+    def __init__(
+        self,
+        states=1,
+        selected_elements={},
+        disabled_elements=[],
+        disabled_color='gray',
+        unselected_color='pink',
+        selected_colors=[
+            "#a6cee3",
+            "#b2df8a",
+            "#fdbf6f",
+            "#6a3d9a",
+            "#b15928",
+            "#e31a1c",
+            "#1f78b4",
+            "#33a02c",
+            "#ff7f00",
+            "#cab2d6",
+            "#ffff99",
+        ],
+        border_color="#cc7777",
+        width="38px",
+        layout=None,
+    ):
         super(PTableWidget, self).__init__()
         self.states = states
         self.disabled_color = disabled_color
@@ -57,16 +201,29 @@ class PTableWidget(DOMWidget):
         self.selected_colors = selected_colors
         self.selected_elements = selected_elements
         self.border_color = border_color
-        self.width = width 
-        
+        self.width = width
+
         if layout is not None:
-            self.layout = layout 
+            self.layout = layout
 
         if len(selected_colors) < states:
-            additional_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]
-            self.selected_colors = selected_colors + additional_colors * (1 + (states - len(selected_colors)) // len(additional_colors))
+            additional_colors = [
+                "#a6cee3",
+                "#b2df8a",
+                "#fdbf6f",
+                "#6a3d9a",
+                "#b15928",
+                "#e31a1c",
+                "#1f78b4",
+                "#33a02c",
+                "#ff7f00",
+                "#cab2d6",
+                "#ffff99",
+            ]
+            self.selected_colors = selected_colors + additional_colors * (
+                1 + (states - len(selected_colors)) // len(additional_colors)
+            )
             self.selected_colors = self.selected_colors[:states]
-
 
     def set_element_state(self, elementName, state):
         if elementName not in self.allElements:
@@ -111,14 +268,32 @@ class PTableWidget(DOMWidget):
             raise TraitError('State value cannot smaller than 1')
         else:
             if len(self.selected_colors) < change["new"]:
-                additional_colors = ["#a6cee3", "#b2df8a", "#fdbf6f", "#6a3d9a", "#b15928", "#e31a1c", "#1f78b4", "#33a02c", "#ff7f00", "#cab2d6", "#ffff99"]
-                self.selected_colors = self.selected_colors + additional_colors * (1 + (change["new"] - len(self.selected_colors)) // len(additional_colors))
-                self.selected_colors = self.selected_colors[:change["new"]]
+                additional_colors = [
+                    "#a6cee3",
+                    "#b2df8a",
+                    "#fdbf6f",
+                    "#6a3d9a",
+                    "#b15928",
+                    "#e31a1c",
+                    "#1f78b4",
+                    "#33a02c",
+                    "#ff7f00",
+                    "#cab2d6",
+                    "#ffff99",
+                ]
+                self.selected_colors = self.selected_colors + additional_colors * (
+                    1
+                    + (change["new"] - len(self.selected_colors))
+                    // len(additional_colors)
+                )
+                self.selected_colors = self.selected_colors[: change["new"]]
             elif len(self.selected_colors) > change["new"]:
-                self.selected_colors = self.selected_colors[:change["new"]]
+                self.selected_colors = self.selected_colors[: change["new"]]
 
     def get_elements_by_state(self, state):
         if state not in range(self.states):
             raise TraitError("State value is wrong")
         else:
-            return [i for i in self.selected_elements if self.selected_elements[i] == state]
+            return [
+                i for i in self.selected_elements if self.selected_elements[i] == state
+            ]
