@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Dou Du.
-# Distributed under the terms of the Modified BSD License.
-
 """
-TODO: Add module docstring
+Copyright (c) Dou Du.
+Distributed under the terms of the Modified BSD License.
+
+A Periodic Table widget for use in Jupyter Notebooks.
 """
 
 from copy import deepcopy
@@ -24,11 +24,11 @@ from traitlets import (
 )
 
 from ._frontend import module_name, module_version
-from .utils import color_as_rgb
+from .utils import color_as_rgb, CHEMICAL_ELEMENTS
 
 
 class PTableWidget(DOMWidget):
-    """Periodic Table Widget """
+    """Periodic Table Widget"""
 
     _model_name = Unicode('MCPTableModel').tag(sync=True)
     _model_module = Unicode(module_name).tag(sync=True)
@@ -46,128 +46,21 @@ class PTableWidget(DOMWidget):
     border_color = Unicode('#cc7777').tag(sync=True)
     disabled = Bool(False, help="Enable or disable user changes.").tag(sync=True)
     width = Unicode('38px').tag(sync=True)
-    allElements = List(
-        [
-            "H",
-            "He",
-            "Li",
-            "Be",
-            "B",
-            "C",
-            "N",
-            "O",
-            "F",
-            "Ne",
-            "Na",
-            "Mg",
-            "Al",
-            "Si",
-            "P",
-            "S",
-            "Cl",
-            "Ar",
-            "K",
-            "Ca",
-            "Sc",
-            "Ti",
-            "V",
-            "Cr",
-            "Mn",
-            "Fe",
-            "Co",
-            "Ni",
-            "Cu",
-            "Zn",
-            "Ga",
-            "Ge",
-            "As",
-            "Se",
-            "Br",
-            "Kr",
-            "Rb",
-            "Sr",
-            "Y",
-            "Zr",
-            "Nb",
-            "Mo",
-            "Tc",
-            "Ru",
-            "Rh",
-            "Pd",
-            "Ag",
-            "Cd",
-            "In",
-            "Sn",
-            "Sb",
-            "Te",
-            "I",
-            "Xe",
-            "Cs",
-            "Ba",
-            "Hf",
-            "Ta",
-            "W",
-            "Re",
-            "Os",
-            "Ir",
-            "Pt",
-            "Au",
-            "Hg",
-            "Tl",
-            "Pb",
-            "Bi",
-            "Po",
-            "At",
-            "Rn",
-            "Fr",
-            "Ra",
-            "Rf",
-            "Db",
-            "Sg",
-            "Bh",
-            "Hs",
-            "Mt",
-            "Ds",
-            "Rg",
-            "Cn",
-            "Nh",
-            "Fi",
-            "Mc",
-            "Lv",
-            "Ts",
-            "Og",
-            "La",
-            "Ce",
-            "Pr",
-            "Nd",
-            "Pm",
-            "Sm",
-            "Eu",
-            "Gd",
-            "Tb",
-            "Dy",
-            "Ho",
-            "Er",
-            "Tm",
-            "Yb",
-            "Lu",
-            "Ac",
-            "Th",
-            "Pa",
-            "U",
-            "Np",
-            "Pu",
-            "Am",
-            "Cm",
-            "Bk",
-            "Cf",
-            "Es",
-            "Fm",
-            "Md",
-            "No",
-            "Lr",
-        ]
-    ).tag(sync=True)
+    allElements = List(CHEMICAL_ELEMENTS).tag(sync=True)
+
+    _STANDARD_COLORS = [
+        "#a6cee3",
+        "#b2df8a",
+        "#fdbf6f",
+        "#6a3d9a",
+        "#b15928",
+        "#e31a1c",
+        "#1f78b4",
+        "#33a02c",
+        "#ff7f00",
+        "#cab2d6",
+        "#ffff99",
+    ]
 
     def __init__(
         self,
@@ -176,19 +69,7 @@ class PTableWidget(DOMWidget):
         disabled_elements=[],
         disabled_color='gray',
         unselected_color='pink',
-        selected_colors=[
-            "#a6cee3",
-            "#b2df8a",
-            "#fdbf6f",
-            "#6a3d9a",
-            "#b15928",
-            "#e31a1c",
-            "#1f78b4",
-            "#33a02c",
-            "#ff7f00",
-            "#cab2d6",
-            "#ffff99",
-        ],
+        selected_colors=_STANDARD_COLORS,
         border_color="#cc7777",
         width="38px",
         layout=None,
@@ -207,21 +88,8 @@ class PTableWidget(DOMWidget):
             self.layout = layout
 
         if len(selected_colors) < states:
-            additional_colors = [
-                "#a6cee3",
-                "#b2df8a",
-                "#fdbf6f",
-                "#6a3d9a",
-                "#b15928",
-                "#e31a1c",
-                "#1f78b4",
-                "#33a02c",
-                "#ff7f00",
-                "#cab2d6",
-                "#ffff99",
-            ]
-            self.selected_colors = selected_colors + additional_colors * (
-                1 + (states - len(selected_colors)) // len(additional_colors)
+            self.selected_colors = selected_colors + self._STANDARD_COLORS * (
+                1 + (states - len(selected_colors)) // len(self._STANDARD_COLORS)
             )
             self.selected_colors = self.selected_colors[:states]
 
@@ -268,23 +136,10 @@ class PTableWidget(DOMWidget):
             raise TraitError('State value cannot smaller than 1')
         else:
             if len(self.selected_colors) < change["new"]:
-                additional_colors = [
-                    "#a6cee3",
-                    "#b2df8a",
-                    "#fdbf6f",
-                    "#6a3d9a",
-                    "#b15928",
-                    "#e31a1c",
-                    "#1f78b4",
-                    "#33a02c",
-                    "#ff7f00",
-                    "#cab2d6",
-                    "#ffff99",
-                ]
-                self.selected_colors = self.selected_colors + additional_colors * (
+                self.selected_colors = self.selected_colors + self._STANDARD_COLORS * (
                     1
                     + (change["new"] - len(self.selected_colors))
-                    // len(additional_colors)
+                    // len(self._STANDARD_COLORS)
                 )
                 self.selected_colors = self.selected_colors[: change["new"]]
             elif len(self.selected_colors) > change["new"]:
