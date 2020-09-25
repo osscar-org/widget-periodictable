@@ -77,7 +77,7 @@ class PTableWidget(DOMWidget):
         x[elementName] = state
         self.selected_elements = x
 
-    @validate('disabled_color', 'unselected_color')
+    @validate('disabled_color', 'unselected_color', 'border_color')
     def _color_change(self, proposal):
         """Convert to rgb(X, Y, Z) type color"""
         return color_as_rgb(proposal['value'])

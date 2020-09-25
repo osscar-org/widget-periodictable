@@ -88,7 +88,13 @@ class MCPTableView extends DOMWidgetView {
   '<% } else { %>' +
   '  <span class="<% if (disabledElements.includes(elementName)) { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> ' +
   ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && (! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" ' +
-  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; border-color: <%= borderColor %>; ' +
+  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; ' +
+  'border-color: <% if (disabled) { colors = borderColor.replace(/[^\\d,]/g, "").split(","); ' +
+  'red = Math.round(255 - 0.38 * ( 255 - parseInt(colors[0], 10) )); ' +
+  'green = Math.round(255 - 0.38 * ( 255 - parseInt(colors[1], 10) )); ' +
+  'blue = Math.round(255 - 0.38 * ( 255 - parseInt(colors[2], 10) )); ' +
+  'print("rgb(" + red.toString(10) + "," + green.toString(10) + "," + blue.toString(10) + ")"); ' +
+  '} else { print(borderColor); } %>; ' +
   'background-color: <% if (disabledElements.includes(elementName)) { color = disabledColor; } ' +
   'else if (selectedElements.includes(elementName)) { ' +
   'i = selectedElements.indexOf(elementName); color = selectedColors[selectedStates[i]]; ' +
