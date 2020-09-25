@@ -147,6 +147,7 @@ $RECYCLE.BIN/
 **/node_modules/
 widget_periodictable/nbextension/static/index.*
 widget_periodictable/labextension/*.tgz
+package-lock.json
 
 # Coverage data
 # -------------
