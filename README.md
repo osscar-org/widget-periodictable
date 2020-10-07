@@ -5,15 +5,14 @@
 
 
 
-A jupyter widget to select chemical elements from the periodic table. This is a update version of the
+A jupyter widget for a interactive periodic table. This is a update version of the
 widget from:
 
 https://github.com/aiidalab/aiidalab-widget-periodictable
 
-,which support both Jupyter notebook and JupyterLab.
+,which support both Jupyter notebook and JupyterLab (2.x).
 
-
-![periodic table](./periodictable.png)
+<img src="./periodictable.png" alt="periodic table" width="600"/>
 
 ## Usage and try it on Binder
 
@@ -50,9 +49,8 @@ One can obtain the element list by state.
 PTable.get_elements_by_state(1)
 ```
 
-# Acknowlegements
+# Acknowledgements
 
-We acknowledge support from:
-* EPFL Open Science Fund
+We acknowledge support from the EPFL Open Science Fund via the [OSSCAR](http://www.osscar.org) project.
 
-<img src='./OSSCAR-logo.png' width='300'>
+<img src='http://www.osscar.org/wp-content/uploads/2019/03/OSSCAR-logo.png' width='230'>
