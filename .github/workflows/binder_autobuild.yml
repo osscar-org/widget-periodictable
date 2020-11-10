@@ -13,3 +13,4 @@ jobs:
           target-repo: osscar-org/widget-periodictable   
           service-name: gh 
           target-state: develop 
+          debug: true 
