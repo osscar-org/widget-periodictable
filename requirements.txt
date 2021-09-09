@@ -1,4 +1,0 @@
-pip==21.2.4
-voila==0.2.11
-osscar-voila==0.2.10.a6
-voila-osscar-template==0.2.10
