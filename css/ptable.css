@@ -1,0 +1,65 @@
+.periodic-table-entry {
+    border: 1px solid;
+    border-color: #cc7777;
+    border-radius: 3px;
+    width: 38px;
+    height: 38px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffaaaa;
+}
+
+.periodic-table-disabled {
+    border-radius: 3px;
+    width: 38px;
+    height: 38px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #999999;
+}
+
+.periodic-table-empty {
+    border: 0px;
+    width: 38px;
+    height: 38px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.periodic-table-row {
+    display: table-row;
+}
+
+.periodic-table-body {
+    display: table; border-spacing: 4px;
+}
+
+.periodic-table-entry:hover {
+    background-color: #cc7777;
+}
+
+.periodic-table-entry.elementOn {
+    background-color: #aaaaff;
+    border: 1px solid #7777cc;
+    border-radius: 4px;
+}
+
+
+.periodic-table-entry.elementOn:hover {
+    background-color: #7777cc;
+    border: 1px solid #7777cc;
+    border-radius: 4px;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+  }
