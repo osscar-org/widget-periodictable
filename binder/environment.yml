@@ -15,6 +15,7 @@ dependencies:
   - jupyterlab >=3.1.11,<4.0.0a0
   # labextension build dependencies
   - nodejs >=16,<17
+  - yarn >=1.22
   - pip
   - wheel
   # additional packages for demos
