@@ -1,5 +1,5 @@
 
-# widget-periodictable
+# **widget-periodictable**: Jupyter Widget for A Interactive Periodic Table
 
 [![Build](https://github.com/osscar-org/widget-periodictable/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/osscar-org/widget-periodictable/actions/workflows/build.yml)
 [![PyPI version](https://badge.fury.io/py/widget-periodictable.svg)](https://badge.fury.io/py/widget-periodictable)
