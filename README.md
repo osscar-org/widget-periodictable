@@ -1,8 +1,8 @@
 
 # widget-periodictable
 
-[![Build Status](https://travis-ci.org/osscar-org/widget-periodictable.svg?branch=develop)](https://travis-ci.org/osscar-org/widget-periodictable)
-[![codecov](https://codecov.io/gh/osscar-org/widget-periodictable/branch/develop/graph/badge.svg)](https://codecov.io/gh/osscar-org/widget-periodictable)
+[![Build](https://github.com/osscar-org/widget-periodictable/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/osscar-org/widget-periodictable/actions/workflows/build.yml)
+[![PyPI version](https://badge.fury.io/py/widget-periodictable.svg)](https://badge.fury.io/py/widget-periodictable)
 
 A jupyter widget for a interactive periodic table.
 
