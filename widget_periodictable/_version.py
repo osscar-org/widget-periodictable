@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Giovanni Pizzi and Dou Du.
+# Copyright (c) Dou Du.
 # Distributed under the terms of the Modified BSD License.
 
-version_info = (2, 1, 5)
+version_info = (3, 0, 0, 'dev')
 __version__ = ".".join(map(str, version_info))

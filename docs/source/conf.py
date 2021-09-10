@@ -29,14 +29,17 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'nbsphinx',
-    'jupyter_sphinx.execute',
+    'jupyter_sphinx',
     'nbsphinx_link',
 ]
+
+# Set the nbsphinx JS path to empty to avoid showing twice of the widgets
+nbsphinx_requirejs_path = ""
+nbsphinx_widgets_path = ""
 
 # Ensure our extension is available:
 import sys
 from os.path import dirname, join as pjoin
-
 docs = dirname(dirname(__file__))
 root = dirname(docs)
 sys.path.insert(0, root)
@@ -56,8 +59,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'widget_periodictable'
-copyright = '2020, Giovanni Pizzi and Dou Du'
-author = 'Giovanni Pizzi and Dou Du'
+copyright = '2021, Dou Du'
+author = 'Dou Du'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -68,7 +71,6 @@ author = 'Giovanni Pizzi and Dou Du'
 
 # get version from python package:
 import os
-
 here = os.path.dirname(__file__)
 repo = os.path.join(here, '..', '..')
 _version_py = os.path.join(repo, 'widget_periodictable', '_version.py')
@@ -127,12 +129,15 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
+
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
+
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
+
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -142,13 +147,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (
-        master_doc,
-        'widget_periodictable.tex',
-        'widget_periodictable Documentation',
-        'Giovanni Pizzi and Dou Du',
-        'manual',
-    ),
+    (master_doc, 'widget_periodictable.tex', 'widget_periodictable Documentation',
+     'Dou Du', 'manual'),
 ]
 
 
@@ -157,13 +157,10 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (
-        master_doc,
-        'widget_periodictable',
-        'widget_periodictable Documentation',
-        [author],
-        1,
-    )
+    (master_doc,
+    'widget_periodictable',
+    'widget_periodictable Documentation',
+     [author], 1)
 ]
 
 
@@ -173,15 +170,13 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (
-        master_doc,
-        'widget_periodictable',
-        'widget_periodictable Documentation',
-        author,
-        'widget_periodictable',
-        'A jupyter widget to select chemical elements from the periodic table.',
-        'Miscellaneous',
-    ),
+    (master_doc,
+     'widget_periodictable',
+     'widget_periodictable Documentation',
+     author,
+     'widget_periodictable',
+     'A jupyter widget for a interactive periodic table.',
+     'Miscellaneous'),
 ]
 
 
@@ -195,7 +190,6 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 if not on_rtd:  # only import and set the theme if we're building docs locally
     import sphinx_rtd_theme
-
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
@@ -205,14 +199,15 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
 # Uncomment this line if you have know exceptions in your included notebooks
 # that nbsphinx complains about:
 #
-nbsphinx_allow_errors = True  # exception ipstruct.py ipython_genutils
+nbsphinx_allow_errors = True # exception ipstruct.py ipython_genutils
 
+from sphinx.util import logging
+logger = logging.getLogger(__name__)
 
 def setup(app):
     def add_scripts(app):
         for fname in ['helper.js', 'embed-bundle.js']:
             if not os.path.exists(os.path.join(here, '_static', fname)):
-                print('missing javascript file: %s' % fname)
+                logger.warning('missing javascript file: %s' % fname)
             app.add_js_file(fname)
-
     app.connect('builder-inited', add_scripts)

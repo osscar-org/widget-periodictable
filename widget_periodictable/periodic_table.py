@@ -64,12 +64,12 @@ class PTableWidget(DOMWidget):
 
     def __init__(
         self,
-        states=None,
+        states=1,
         selected_elements=None,
         disabled_elements=None,
         disabled_color=None,
         unselected_color=None,
-        selected_colors=None,
+        selected_colors=[],
         border_color=None,
         width=None,
         layout=None,

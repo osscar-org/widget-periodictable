@@ -4,7 +4,7 @@ widget_periodictable
 
 Version: |release|
 
-A jupyter widget to select chemical elements from the periodic table.
+A jupyter widget for a interactive periodic table.
 
 
 Quickstart

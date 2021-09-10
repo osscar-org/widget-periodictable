@@ -1,21 +1,15 @@
+
 # widget-periodictable
 
-![Build](https://github.com/osscar-org/widget-periodictable/workflows/Build/badge.svg?branch=develop)
-[![Documentation Status](https://readthedocs.org/projects/widget-periodictable/badge/?version=develop)](https://widget-periodictable.readthedocs.io/en/develop/?badge=develop)
+[![Build Status](https://travis-ci.org/osscar-org/widget-periodictable.svg?branch=develop)](https://travis-ci.org/osscar-org/widget_periodictable)
+[![codecov](https://codecov.io/gh/osscar-org/widget-periodictable/branch/develop/graph/badge.svg)](https://codecov.io/gh/osscar-org/widget-periodictable)
 
+A jupyter widget for a interactive periodic table.
 
+## Try it with Binder
 
-A jupyter widget for a interactive periodic table. This is a update version of the
-widget from:
-
-https://github.com/aiidalab/aiidalab-widget-periodictable
-
-,which support both Jupyter notebook and JupyterLab (2.x).
-
-<img src="./periodictable.png" alt="periodic table" width="600"/>
-
-## Usage and try it on Binder
-
+You can try the interactive periodic table
+and check the usage through the Binder link:
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/develop?urlpath=%2Fvoila%2Frender%2Fexamples%2Fintroduction.ipynb)
 
 ## Installation
@@ -26,30 +20,63 @@ You can install using `pip`:
 pip install widget_periodictable
 ```
 
-Or if you use jupyterlab:
-
-```bash
-pip install widget_periodictable
-jupyter lab build
-```
-
 If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
 the nbextension:
-
 ```bash
 jupyter nbextension enable --py [--sys-prefix|--user|--system] widget_periodictable
 ```
 
-## Selection and disable
+## Development Installation
 
-By clicking on the elements, one can select and disable the elements. The selected elements can be divided into different states with custom colors.
-One can obtain the element list by state.
-
+Create a dev environment:
 ```bash
-PTable.get_elements_by_state(1)
+conda create -n widget_periodictable-dev -c conda-forge nodejs yarn python jupyterlab
+conda activate widget_periodictable-dev
 ```
 
-# Acknowledgements
+Install the python. This will also build the TS package.
+```bash
+pip install -e ".[test, examples]"
+```
+
+When developing your extensions, you need to manually enable your extensions with the
+notebook / lab frontend. For lab, this is done by the command:
+
+```
+jupyter labextension develop --overwrite .
+yarn run build
+```
+
+For classic notebook, you need to run:
+
+```
+jupyter nbextension install --sys-prefix --symlink --overwrite --py widget_periodictable
+jupyter nbextension enable --sys-prefix --py widget_periodictable
+```
+
+Note that the `--symlink` flag doesn't work on Windows, so you will here have to run
+the `install` command every time that you rebuild your extension. For certain installations
+you might also need another flag instead of `--sys-prefix`, but we won't cover the meaning
+of those flags here.
+
+### How to see your changes
+#### Typescript:
+If you use JupyterLab to develop then you can watch the source directory and run JupyterLab at the same time in different
+terminals to watch for changes in the extension's source and automatically rebuild the widget.
+
+```bash
+# Watch the source directory in one terminal, automatically rebuilding when needed
+yarn run watch
+# Run JupyterLab in another terminal
+jupyter lab
+```
+
+After a change wait for the build to finish and then refresh your browser and the changes should take effect.
+
+#### Python:
+If you make a change to the python code then you will need to restart the notebook kernel to have it take effect.
+
+## Acknowledgements
 
 We acknowledge support from the EPFL Open Science Fund via the [OSSCAR](http://www.osscar.org) project.
 

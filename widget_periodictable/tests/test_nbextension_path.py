@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Giovanni Pizzi and Dou Du.
+# Copyright (c) Dou Du.
 # Distributed under the terms of the Modified BSD License.
 
 
 def test_nbextension_path():
     # Check that magic function can be imported from package root:
     from widget_periodictable import _jupyter_nbextension_paths
-
     # Ensure that it can be called without incident:
     path = _jupyter_nbextension_paths()
     # Some sanity checks:
