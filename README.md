@@ -6,6 +6,8 @@
 
 A jupyter widget for a interactive periodic table.
 
+![demo](binder/demo.gif)
+
 ## Try it with Binder
 
 You can try the interactive periodic table
