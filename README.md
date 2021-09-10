@@ -1,11 +1,16 @@
 
 # widget-periodictable
 
-[![Build Status](https://travis-ci.org/osscar-org/widget-periodictable.svg?branch=master)](https://travis-ci.org/osscar-org/widget_periodictable)
-[![codecov](https://codecov.io/gh/osscar-org/widget-periodictable/branch/master/graph/badge.svg)](https://codecov.io/gh/osscar-org/widget-periodictable)
-
+[![Build Status](https://travis-ci.org/osscar-org/widget-periodictable.svg?branch=develop)](https://travis-ci.org/osscar-org/widget_periodictable)
+[![codecov](https://codecov.io/gh/osscar-org/widget-periodictable/branch/develop/graph/badge.svg)](https://codecov.io/gh/osscar-org/widget-periodictable)
 
 A jupyter widget for a interactive periodic table.
+
+## Try it with Binder
+
+You can try the interactive periodic table
+and check the usage through the Binder link:
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/develop?urlpath=%2Fvoila%2Frender%2Fexamples%2Fintroduction.ipynb)
 
 ## Installation
 
@@ -70,3 +75,9 @@ After a change wait for the build to finish and then refresh your browser and th
 
 #### Python:
 If you make a change to the python code then you will need to restart the notebook kernel to have it take effect.
+
+## Acknowledgements
+
+We acknowledge support from the EPFL Open Science Fund via the [OSSCAR](http://www.osscar.org) project.
+
+<img src='http://www.osscar.org/wp-content/uploads/2019/03/OSSCAR-logo.png' width='230'>
