@@ -1,3 +1,112 @@
 [build-system]
-requires = ["jupyter_packaging==0.7.9", "jupyterlab==3.*", "setuptools>=40.8.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "hatchling>=1.3.1",
+    "jupyterlab==3.*",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "widget_periodictable"
+description = "A jupyter widget for a interactive periodic table."
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+requires-python = ">=3.7"
+authors = [
+    { name = "Dou Du,Casper Welzel Andersen", email = "dou.du@epfl.ch" },
+]
+keywords = [
+    "IPython",
+    "Jupyter",
+    "Widgets",
+]
+classifiers = [
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "ipywidgets>=7.0.0",
+]
+version = "3.1.0"
+
+[project.optional-dependencies]
+docs = [
+    "jupyter_sphinx",
+    "nbsphinx",
+    "nbsphinx-link",
+    "pypandoc",
+    "pytest_check_links",
+    "recommonmark",
+    "sphinx>=1.5",
+    "sphinx_rtd_theme",
+]
+examples = []
+test = [
+    "nbval",
+    "pytest-cov",
+    "pytest>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/osscar-org/widget-periodictable"
+
+[tool.hatch.build]
+artifacts = [
+    "widget_periodictable/nbextension/index.*",
+    "widget_periodictable/labextension/*.tgz",
+    "widget_periodictable/labextension",
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"widget_periodictable/nbextension" = "share/jupyter/nbextensions/widget_periodictable"
+"widget_periodictable/labextension" = "share/jupyter/labextensions/widget_periodictable"
+"./install.json" = "share/jupyter/labextensions/widget_periodictable/install.json"
+"./widget_periodictable.json" = "etc/jupyter/nbconfig/notebook.d/widget_periodictable.json"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".github",
+]
+
+[tool.hatch.build.hooks.jupyter-builder]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "widget_periodictable/nbextension/index.js",
+    "widget_periodictable/labextension/package.json",
+]
+skip-if-exists = [
+    "widget_periodictable/nbextension/index.js",
+    "widget_periodictable/labextension/package.json",
+]
+dependencies = [
+    "hatch-jupyter-builder>=0.5.0",
+]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+path = "."
+build_cmd = "build:prod"
+
+[tool.tbump]
+field = [
+    { name = "channel", default = "" },
+    { name = "release", default = "" },
+]
+file = [
+    { src = "pyproject.toml", version_template = "version = \"{major}.{minor}.{patch}{channel}{release}\"" },
+    { src = "widget_periodictable/_version.py" },
+]
+
+[tool.tbump.version]
+current = "3.1.0"
+regex = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)((?P<channel>a|b|rc|.dev)(?P<release>\\d+))?"
+
+[tool.tbump.git]
+message_template = "Bump to {new_version}"
+tag_template = "v{new_version}"

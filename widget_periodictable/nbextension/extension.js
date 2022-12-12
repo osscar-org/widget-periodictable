@@ -6,7 +6,7 @@ define(function() {
     window['requirejs'].config({
         map: {
             '*': {
-                'widget-periodictable': 'nbextensions/widget_periodictable/index',
+                'widget_periodictable': 'nbextensions/widget_periodictable/index',
             },
         }
     });

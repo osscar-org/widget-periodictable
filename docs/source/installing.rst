@@ -25,7 +25,7 @@ notebook (as opposed to Jupyterlab), run::
 with the `appropriate flag`_. If you are using Jupyterlab, install the extension
 with::
 
-    jupyter labextension install widget-periodictable
+    jupyter labextension install widget_periodictable
 
 If you are installing using conda, these commands should be unnecessary, but If
 you need to run them the commands should be the same (just make sure you choose the

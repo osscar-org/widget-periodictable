@@ -1,6 +1,6 @@
 {
-  "name": "widget-periodictable",
-  "version": "3.0.0",
+  "name": "widget_periodictable",
+  "version": "3.1.0",
   "description": "A jupyter widget for a interactive periodic table.",
   "keywords": [
     "jupyter",
@@ -19,7 +19,7 @@
   },
   "license": "BSD-3-Clause",
   "author": {
-    "name": "Dou Du, Casper Welzel Andersen and Giovanni Pizzi",
+    "name": "Dou Du,Casper Welzel Andersen and Giovanni Pizzi",
     "email": "dou.du@epfl.ch"
   },
   "main": "lib/index.js",
@@ -49,14 +49,15 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@jupyter-widgets/base": "^1.1.10 || ^2.0.0 || ^3.0.0 || ^4.0.0"
+    "@jupyter-widgets/base": "^1.1.10 || ^2 || ^3 || ^4 || ^5 || ^6"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
+    "@jupyter-widgets/base-manager": "^1.0.2",
     "@jupyterlab/builder": "^3.0.0",
-    "@phosphor/application": "^1.6.0",
-    "@phosphor/widgets": "^1.6.0",
+    "@lumino/application": "^1.6.0",
+    "@lumino/widgets": "^1.6.0",
     "@types/jest": "^26.0.0",
     "@types/webpack-env": "^1.13.6",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
@@ -78,7 +79,7 @@
     "ts-jest": "^26.0.0",
     "ts-loader": "^8.0.0",
     "typescript": "~4.1.3",
-    "webpack": "^5.0.0",
+    "webpack": "^5.61.0",
     "webpack-cli": "^4.0.0"
   },
   "jupyterlab": {

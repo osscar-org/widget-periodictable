@@ -6,20 +6,20 @@
 
 import { createTestModel } from './utils';
 
-import { MCPTableModel } from '..';
+import { ExampleModel } from '..';
 
 describe('Example', () => {
-  describe('MCPTableModel', () => {
+  describe('ExampleModel', () => {
     it('should be createable', () => {
-      const model = createTestModel(MCPTableModel);
-      expect(model).toBeInstanceOf(MCPTableModel);
+      const model = createTestModel(ExampleModel);
+      expect(model).toBeInstanceOf(ExampleModel);
       expect(model.get('value')).toEqual('Hello World');
     });
 
     it('should be createable with a value', () => {
       const state = { value: 'Foo Bar!' };
-      const model = createTestModel(MCPTableModel, state);
-      expect(model).toBeInstanceOf(MCPTableModel);
+      const model = createTestModel(ExampleModel, state);
+      expect(model).toBeInstanceOf(ExampleModel);
       expect(model.get('value')).toEqual('Foo Bar!');
     });
   });

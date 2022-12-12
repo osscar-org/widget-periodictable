@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Dou Du.
+# Copyright (c) Dou Du,Casper Welzel Andersen.
 # Distributed under the terms of the Modified BSD License.
 
 

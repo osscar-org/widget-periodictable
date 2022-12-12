@@ -1,9 +1,9 @@
-// Copyright (c) Dou Du
+// Copyright (c) Dou Du,Casper Welzel Andersen
 // Distributed under the terms of the Modified BSD License.
 
-import { Application, IPlugin } from '@phosphor/application';
+import { Application, IPlugin } from '@lumino/application';
 
-import { Widget } from '@phosphor/widgets';
+import { Widget } from '@lumino/widgets';
 
 import { IJupyterWidgetRegistry } from '@jupyter-widgets/base';
 
@@ -11,7 +11,7 @@ import * as widgetExports from './widget';
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
-const EXTENSION_ID = 'widget-periodictable:plugin';
+const EXTENSION_ID = 'widget_periodictable:plugin';
 
 /**
  * The example plugin.

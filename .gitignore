@@ -146,7 +146,6 @@ $RECYCLE.BIN/
 
 **/node_modules/
 widget_periodictable/nbextension/index.*
-widget_periodictable/labextension/*.tgz
 
 # Coverage data
 # -------------

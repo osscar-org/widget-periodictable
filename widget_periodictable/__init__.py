@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Dou Du.
+# Copyright (c) Dou Du,Casper Welzel Andersen.
 # Distributed under the terms of the Modified BSD License.
 
 from .periodic_table import *
@@ -21,7 +21,7 @@ def _jupyter_labextension_paths():
     """
     return [{
         'src': 'labextension',
-        'dest': 'widget-periodictable',
+        'dest': 'widget_periodictable',
     }]
 
 

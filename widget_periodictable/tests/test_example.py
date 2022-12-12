@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Dou Du.
+# Copyright (c) Dou Du,Casper Welzel Andersen.
 # Distributed under the terms of the Modified BSD License.
 
 import pytest
 
-from ..periodic_table import PTableWidget
+from ..example import ExampleWidget
 
 
 def test_example_creation_blank():
-    w = PTableWidget()
-    assert w.states == 1
+    w = ExampleWidget()
+    assert w.value == 'Hello World'

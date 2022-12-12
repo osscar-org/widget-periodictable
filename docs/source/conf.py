@@ -59,8 +59,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'widget_periodictable'
-copyright = '2021, Dou Du'
-author = 'Dou Du'
+copyright = '2022, Dou Du,Casper Welzel Andersen'
+author = 'Dou Du,Casper Welzel Andersen'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -88,7 +88,7 @@ release = version_ns['__version__']
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -148,7 +148,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'widget_periodictable.tex', 'widget_periodictable Documentation',
-     'Dou Du', 'manual'),
+     'Dou Du,Casper Welzel Andersen', 'manual'),
 ]
 
 
