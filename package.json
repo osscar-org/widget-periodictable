@@ -1,6 +1,6 @@
 {
   "name": "widget_periodictable",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "A jupyter widget for a interactive periodic table.",
   "keywords": [
     "jupyter",
