@@ -1,7 +1,0 @@
-{
-  "VoilaConfiguration": {
-    "enable_nbextensions": true,  
-    "theme": "light",
-    "template": "osscar"
-  }
-}
