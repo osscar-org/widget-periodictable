@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "widget-periodictable"
-version = "4.0.5"
+version = "4.1.0"
 dependencies = ["anywidget>=0.9.10"]
 readme = "README.md"
 keywords = [
@@ -39,7 +39,7 @@ npm = "npm"
 build_cmd = "build"
 
 [tool.bumpver]
-current_version = "v4.0.5"
+current_version = "v4.1.0"
 version_pattern = "vMAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "Bump version {old_version} -> {new_version}"
 commit = true
