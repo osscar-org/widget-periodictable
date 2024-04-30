@@ -1,6 +1,7 @@
 # Jupyter widget: Interactive periodic table
 
 [![PyPI version](https://badge.fury.io/py/widget-periodictable.svg)](https://badge.fury.io/py/widget-periodictable)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/main?urlpath=%2Fvoila%2Frender%2Fexamples%2Fintroduction.ipynb)
 
 ## Installation & usage
 
@@ -26,6 +27,19 @@ npm run dev
 ```
 
 Open the example notebook in JupyterLab, VS Code, or your favorite editor to start developing. Changes made in `js/` will be reflected in the notebook.
+
+### Releasing and publishing a new version
+
+In order to make a new release of the library and publish to PYPI, run
+
+```bash
+bumpver update --major/--minor/--patch
+```
+
+This will
+
+- update version numbers, make a corresponding `git commit` and a `git tag`;
+- push this commit and tag to Github, which triggers the Github Action that makes a new Github Release and publishes the package to PYPI.
 
 ## Acknowledgements
 
