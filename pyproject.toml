@@ -4,8 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "widget-periodictable"
+description = 'A jupyter widget of the periodic table of elements.'
 version = "4.1.0"
-dependencies = ["anywidget>=0.9.10"]
+dependencies = ["anywidget~=0.9.10"]
+authors = [{ name = "The OSSCAR team" }]
 readme = "README.md"
 keywords = [
   'jupyter',
@@ -15,6 +17,20 @@ keywords = [
   'osscar',
   'mendeleev',
 ]
+classifiers = [
+  'Development Status :: 5 - Production/Stable',
+  'Programming Language :: Python',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Topic :: Scientific/Engineering',
+]
+license = { file = 'LICENSE.txt' }
+requires-python = '>=3.9'
+
+[project.urls]
+Home = 'https://www.osscar.org/'
+Source = 'https://github.com/osscar-org/widget-periodictable'
 
 [project.optional-dependencies]
 dev = ["watchfiles", "jupyterlab", "bumpver>=2023"]
