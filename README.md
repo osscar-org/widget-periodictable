@@ -4,6 +4,8 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/widget-periodictable/main?urlpath=%2Fvoila%2Frender%2Fexamples%2Fintroduction.ipynb)
 [![Voila test](https://github.com/osscar-org/widget-periodictable/actions/workflows/voila-test.yml/badge.svg)](https://github.com/osscar-org/widget-periodictable/actions/workflows/voila-test.yml)
 
+![demo](https://raw.githubusercontent.com/osscar-org/widget-periodictable/main/example/demo.gif)
+
 ## Installation & usage
 
 ```sh
