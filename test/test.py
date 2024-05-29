@@ -29,7 +29,7 @@ class test_widget():
     time.sleep(3)
     self.driver.save_screenshot("widget-01.png")
 
-    element = driver.find_element(By.CLASS_NAME, 'element-Sn')
+    element = self.driver.find_element(By.CLASS_NAME, 'element-Sn')
     element.click()
     time.sleep(3)
     self.driver.save_screenshot("widget-02.png")
