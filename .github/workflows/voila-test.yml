@@ -47,7 +47,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: quantum-screenshot
+        name: artifact
         path: './*.png'
 
     - name: Run the figures test
