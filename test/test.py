@@ -27,7 +27,7 @@ class test_widget():
     try:
       self.find_element(By.CLASS_NAME, 'element-Si')
       print("Element Si is fund!")
-    else:
+    except:
       raise Exception("Element Si is NOT found!!!")
 
   def download_widget_image(self):
