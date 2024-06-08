@@ -24,6 +24,10 @@ class test_widget():
     self.driver.quit()
 
   def test_elements(self):
+    self.driver.get("http://localhost:8383/voila/render/example.ipynb")
+    self.driver.set_window_size(1280, 1080)
+    time.sleep(3)
+
     try:
       self.find_element(By.CLASS_NAME, 'element-Si')
       print("Element Si is fund!")
