@@ -29,7 +29,7 @@ class test_widget():
     time.sleep(3)
 
     try:
-      self.find_element(By.CLASS_NAME, 'element-Si')
+      self.driver.find_element(By.CLASS_NAME, 'element-Si')
       print("Element Si is fund!")
     except:
       raise Exception("Element Si is NOT found!!!")
