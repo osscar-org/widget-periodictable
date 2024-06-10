@@ -45,6 +45,21 @@ This will
 - update version numbers, make a corresponding `git commit` and a `git tag`;
 - push this commit and tag to Github, which triggers the Github Action that makes a new Github Release and publishes the package to PYPI.
 
+
+### Github workflow testing
+
+[![widget test](https://github.com/osscar-org/widget-periodictable/actions/workflows/widget-test.yml/badge.svg)](https://github.com/osscar-org/widget-periodictable/actions/workflows/widget-test.yml)
+
+If the `widget test` failed, it means there is sometime wrong with the code and the widget is NOT
+showing in the test.
+
+
+[![screenshot comparison](https://github.com/osscar-org/widget-periodictable/actions/workflows/screenshot-comparison.yml/badge.svg)](https://github.com/osscar-org/widget-periodictable/actions/workflows/screenshot-comparison.yml)
+
+If the `widget test` passed but the `screenshot comparsion` failed, it means the appearance of the widget
+is different from previous version. One need manually download the artfact from `widget test` and use it 
+replace the figure `widget-sample.png` in the `test` folder.
+
 ## Acknowledgements
 
 We acknowledge support from the EPFL Open Science Fund via the [OSSCAR](http://www.osscar.org) project.
