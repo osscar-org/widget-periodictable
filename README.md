@@ -50,15 +50,14 @@ This will
 
 [![widget test](https://github.com/osscar-org/widget-periodictable/actions/workflows/widget-test.yml/badge.svg)](https://github.com/osscar-org/widget-periodictable/actions/workflows/widget-test.yml)
 
-If the `widget test` failed, it means there is sometime wrong with the code and the widget is NOT
-showing in the test.
-
+If the `widget test` fails, it indicates there is something wrong with the code, and the widget is NOT
+being displayed correctly in the test.
 
 [![screenshot comparison](https://github.com/osscar-org/widget-periodictable/actions/workflows/screenshot-comparison.yml/badge.svg)](https://github.com/osscar-org/widget-periodictable/actions/workflows/screenshot-comparison.yml)
 
-If the `widget test` passed but the `screenshot comparsion` failed, it means the appearance of the widget
-is different from previous version. One need manually download the artfact from `widget test` and use it 
-replace the figure `widget-sample.png` in the `test` folder.
+If the `widget test` passes but the `screenshot comparison` fails, it indicates the appearance of the widget 
+is different from the previous version. In this case, you'll need to manually download the artifact from 
+the `widget test` and use it to replace the `widget-sample.png` figure in the `test` folder.
 
 ## Acknowledgements
 
