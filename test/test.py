@@ -36,7 +36,7 @@ class test_widget():
 
   def download_widget_image(self):
     self.driver.get("http://localhost:8383/voila/render/example.ipynb")
-    self.driver.set_window_size(1280, 1080)
+    self.driver.set_window_size(1280, 2000)
     time.sleep(3)
     self.driver.save_screenshot("widget-01.png")
 
@@ -44,6 +44,11 @@ class test_widget():
     element.click()
     time.sleep(3)
     self.driver.save_screenshot("widget-02.png")
+
+    #Move the end of the page
+    self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
+    time.sleep(3)
+    self.driver.save_screenshot("widget-03.png")
 
 test = test_widget()
 test.setup_method('Chrome')
