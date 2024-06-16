@@ -16,6 +16,8 @@ class test_widget():
   def setup_method(self, method):
     options = Options()
     cwd = os.getcwd()
+    options.add_argument("--headless")
+    options.add_argument("--window-size=1280x1500")
     options.add_experimental_option("prefs", {"download.default_directory": cwd})
     self.driver = webdriver.Chrome(options=options)
     self.vars = {}
@@ -25,7 +27,7 @@ class test_widget():
 
   def test_elements(self):
     self.driver.get("http://localhost:8383/voila/render/example.ipynb")
-    self.driver.set_window_size(1280, 1080)
+    #self.driver.set_window_size(1280, 1080)
     time.sleep(3)
 
     try:
@@ -36,7 +38,7 @@ class test_widget():
 
   def download_widget_image(self):
     self.driver.get("http://localhost:8383/voila/render/example.ipynb")
-    self.driver.set_window_size(1280, 2000)
+    #self.driver.set_window_size(1280, 2000)
     time.sleep(3)
     self.driver.save_screenshot("widget-01.png")
 
