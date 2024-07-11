@@ -1,6 +1,5 @@
 import re
 
-
 HTML_COLOR_MAP = {
     "white": (255,) * 3,
     "silver": tuple(round(0.75 * i) for i in (255,) * 3),
@@ -128,7 +127,7 @@ CHEMICAL_ELEMENTS = [
     "Rg",
     "Cn",
     "Nh",
-    "Fi",
+    "Fl",
     "Mc",
     "Lv",
     "Ts",
