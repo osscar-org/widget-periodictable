@@ -7,6 +7,6 @@ diff = ImageChops.difference(image1, image2)
 stat = ImageStat.Stat(diff)
 
 if sum(stat.mean) == 0:
-  print('images are the same')
+  print('Images are the same!')
 else:
-  raise Exception("The result is NOT the same as expected. Please check matplotlib version.")
+  raise Exception("The result is NOT the same as expected.")
