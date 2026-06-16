@@ -1,257 +1,398 @@
-import * as _ from 'underscore';
-import $ from 'jquery';
-import './widget.css';
+import "./widget.css";
 
-const elementTable = [
-  ['H', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'He'],
-  ['Li', 'Be', '', '', '', '', '', '', '', '', '', '', 'B', 'C', 'N', 'O', 'F', 'Ne'],
-  ['Na', 'Mg', '', '', '', '', '', '', '', '', '', '', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar'],
-  ['K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr'],
-  ['Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe'],
-  ['Cs', 'Ba', '*', 'Hf', 'Ta', 'W', 'Re', 'Os', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn'],
-  ['Fr', 'Ra', '#', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt', 'Ds', 'Rg', 'Cn', 'Nh', 'Fl', 'Mc', 'Lv', 'Ts', 'Og'],
-  ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-  ['', '', '*', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu'],
-  ['', '', '#', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', 'Md', 'No', 'Lr']];
+// ============================================================
+// Element classification data (from ptable_data.js)
+// Index = atomic number
+// ============================================================
+const elementsInfo = [
+  null, // index 0, unused
+  { sym: "H", cls: "H" },
+  { sym: "He", cls: "noble" },
+  { sym: "Li", cls: "alkali" },
+  { sym: "Be", cls: "alkaline_earth" },
+  { sym: "B", cls: "semimetal" },
+  { sym: "C", cls: "nonmetal" },
+  { sym: "N", cls: "nonmetal" },
+  { sym: "O", cls: "nonmetal" },
+  { sym: "F", cls: "halogen" },
+  { sym: "Ne", cls: "noble" },
+  { sym: "Na", cls: "alkali" },
+  { sym: "Mg", cls: "alkaline_earth" },
+  { sym: "Al", cls: "post_transition" },
+  { sym: "Si", cls: "semimetal" },
+  { sym: "P", cls: "nonmetal" },
+  { sym: "S", cls: "nonmetal" },
+  { sym: "Cl", cls: "halogen" },
+  { sym: "Ar", cls: "noble" },
+  { sym: "K", cls: "alkali" },
+  { sym: "Ca", cls: "alkaline_earth" },
+  { sym: "Sc", cls: "transition" },
+  { sym: "Ti", cls: "transition" },
+  { sym: "V", cls: "transition" },
+  { sym: "Cr", cls: "transition" },
+  { sym: "Mn", cls: "transition" },
+  { sym: "Fe", cls: "transition" },
+  { sym: "Co", cls: "transition" },
+  { sym: "Ni", cls: "transition" },
+  { sym: "Cu", cls: "transition" },
+  { sym: "Zn", cls: "transition" },
+  { sym: "Ga", cls: "post_transition" },
+  { sym: "Ge", cls: "semimetal" },
+  { sym: "As", cls: "semimetal" },
+  { sym: "Se", cls: "nonmetal" },
+  { sym: "Br", cls: "halogen" },
+  { sym: "Kr", cls: "noble" },
+  { sym: "Rb", cls: "alkali" },
+  { sym: "Sr", cls: "alkaline_earth" },
+  { sym: "Y", cls: "transition" },
+  { sym: "Zr", cls: "transition" },
+  { sym: "Nb", cls: "transition" },
+  { sym: "Mo", cls: "transition" },
+  { sym: "Tc", cls: "transition" },
+  { sym: "Ru", cls: "transition" },
+  { sym: "Rh", cls: "transition" },
+  { sym: "Pd", cls: "transition" },
+  { sym: "Ag", cls: "transition" },
+  { sym: "Cd", cls: "transition" },
+  { sym: "In", cls: "post_transition" },
+  { sym: "Sn", cls: "post_transition" },
+  { sym: "Sb", cls: "semimetal" },
+  { sym: "Te", cls: "semimetal" },
+  { sym: "I", cls: "halogen" },
+  { sym: "Xe", cls: "noble" },
+  { sym: "Cs", cls: "alkali" },
+  { sym: "Ba", cls: "alkaline_earth" },
+  { sym: "La", cls: "lanthanoid" },
+  { sym: "Ce", cls: "lanthanoid" },
+  { sym: "Pr", cls: "lanthanoid" },
+  { sym: "Nd", cls: "lanthanoid" },
+  { sym: "Pm", cls: "lanthanoid" },
+  { sym: "Sm", cls: "lanthanoid" },
+  { sym: "Eu", cls: "lanthanoid" },
+  { sym: "Gd", cls: "lanthanoid" },
+  { sym: "Tb", cls: "lanthanoid" },
+  { sym: "Dy", cls: "lanthanoid" },
+  { sym: "Ho", cls: "lanthanoid" },
+  { sym: "Er", cls: "lanthanoid" },
+  { sym: "Tm", cls: "lanthanoid" },
+  { sym: "Yb", cls: "lanthanoid" },
+  { sym: "Lu", cls: "lanthanoid" },
+  { sym: "Hf", cls: "transition" },
+  { sym: "Ta", cls: "transition" },
+  { sym: "W", cls: "transition" },
+  { sym: "Re", cls: "transition" },
+  { sym: "Os", cls: "transition" },
+  { sym: "Ir", cls: "transition" },
+  { sym: "Pt", cls: "transition" },
+  { sym: "Au", cls: "transition" },
+  { sym: "Hg", cls: "transition" },
+  { sym: "Tl", cls: "post_transition" },
+  { sym: "Pb", cls: "post_transition" },
+  { sym: "Bi", cls: "post_transition" },
+  { sym: "Po", cls: "post_transition" },
+  { sym: "At", cls: "halogen" },
+  { sym: "Rn", cls: "noble" },
+  { sym: "Fr", cls: "alkali" },
+  { sym: "Ra", cls: "alkaline_earth" },
+  { sym: "Ac", cls: "actinoid" },
+  { sym: "Th", cls: "actinoid" },
+  { sym: "Pa", cls: "actinoid" },
+  { sym: "U", cls: "actinoid" },
+  { sym: "Np", cls: "actinoid" },
+  { sym: "Pu", cls: "actinoid" },
+  { sym: "Am", cls: "actinoid" },
+  { sym: "Cm", cls: "actinoid" },
+  { sym: "Bk", cls: "actinoid" },
+  { sym: "Cf", cls: "actinoid" },
+  { sym: "Es", cls: "actinoid" },
+  { sym: "Fm", cls: "actinoid" },
+  { sym: "Md", cls: "actinoid" },
+  { sym: "No", cls: "actinoid" },
+  { sym: "Lr", cls: "actinoid" },
+  { sym: "Rf", cls: "transition" },
+  { sym: "Db", cls: "transition" },
+  { sym: "Sg", cls: "transition" },
+  { sym: "Bh", cls: "transition" },
+  { sym: "Hs", cls: "transition" },
+  { sym: "Mt", cls: "X" },
+  { sym: "Ds", cls: "X" },
+  { sym: "Rg", cls: "X" },
+  { sym: "Cn", cls: "X" },
+  { sym: "Nh", cls: "X" },
+  { sym: "Fl", cls: "X" },
+  { sym: "Mc", cls: "X" },
+  { sym: "Lv", cls: "X" },
+  { sym: "Ts", cls: "X" },
+  { sym: "Og", cls: "X" },
+];
 
-const tableTemplate = _.template(
-  '<% for (let elementRow of elementTable) { ' +
-  'print("<div class=\'periodic-table-row\'>"); ' +
-  'for (let elementName of elementRow) { ' +
-  'if ( (elementName === "") || (elementName == "*" ) || (elementName == "#" ) ) { %>' +
-  '  <span class="periodic-table-empty noselect" style="width: <%= elementWidth %>; height: <%= elementWidth %>;"><%= elementName %></span>' +
-  '<% } else { %>' +
-  '  <span class="<% if (disabledElements.includes(elementName)) { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> ' +
-  ' noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && (! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>" ' +
-  'style="width: <%= elementWidth %>; height: <%= elementWidth %>; ' +
-  'border-color: <% if (disabled) { colors = borderColor.replace(/[^\\d,]/g, "").split(","); ' +
-  'red = Math.round(255 - 0.38 * ( 255 - parseInt(colors[0], 10) )); ' +
-  'green = Math.round(255 - 0.38 * ( 255 - parseInt(colors[1], 10) )); ' +
-  'blue = Math.round(255 - 0.38 * ( 255 - parseInt(colors[2], 10) )); ' +
-  'print("rgb(" + red.toString(10) + "," + green.toString(10) + "," + blue.toString(10) + ")"); ' +
-  '} else { print(borderColor); } %>; ' +
-  'background-color: <% if (disabledElements.includes(elementName)) { color = disabledColor; } ' +
-  'else if (selectedElements.includes(elementName)) { ' +
-  'i = selectedElements.indexOf(elementName); color = selectedColors[selectedStates[i]]; ' +
-  '} else { color = unselectedColor; } ' +
-  'if (disabled) { colors = color.replace(/[^\\d,]/g, "").split(","); ' +
-  'red = Math.round(255 - 0.38 * ( 255 - parseInt(colors[0], 10) )); ' +
-  'green = Math.round(255 - 0.38 * ( 255 - parseInt(colors[1], 10) )); ' +
-  'blue = Math.round(255 - 0.38 * ( 255 - parseInt(colors[2], 10) )); ' +
-  'print("rgb(" + red.toString(10) + "," + green.toString(10) + "," + blue.toString(10) + ")"); ' +
-  '} else { print(color); } %>"' +
-  // 'title="state: <% if (selectedElements.includes(elementName)) { i = selectedElements.indexOf(elementName); print(selectedStates[i]);} '+
-  // 'else if (disabledElements.includes(elementName)){print("disabled");} else {print("unselected");} %>" ><% '+
-  '><% print(displayNamesReplacements[elementName] || elementName); %></span>' +
-  '<% } }; print("</div>"); } %>',
-);
+// ============================================================
+// Element class colors (from ptable_data.js)
+// ============================================================
+const elementClassColors = {
+  X: "rgb(220, 220, 220)",
+  H: "rgb(220, 105, 105)",
+  noble: "rgb(196, 205, 255)",
+  alkali: "rgb(209, 146, 146)",
+  alkaline_earth: "rgb(209, 189, 146)",
+  semimetal: "rgb(189, 214, 163)",
+  nonmetal: "rgb(214, 163, 190)",
+  halogen: "rgb(210, 214, 163)",
+  post_transition: "rgb(163, 178, 214)",
+  transition: "rgb(169, 196, 212)",
+  lanthanoid: "rgb(237, 184, 255)",
+  actinoid: "rgb(191, 150, 255)",
+};
 
-const elementList = [];
-for (const elementRow of elementTable) {
-  for (const elementName of elementRow) {
-    if (elementName === '' || elementName === '*') {
-      continue;
-    } else {
-      elementList.push(elementName);
-    }
-  }
+// ============================================================
+// RGB blending utility (from utils.js)
+// Logarithmic blend between two rgb(a) color strings
+// ============================================================
+function RGB_Log_Blend(p, c0, c1) {
+  const i = parseInt,
+    r = Math.round,
+    P = 1 - p;
+  const [a, b, c, d] = c0.split(",");
+  const [e, f, g, h] = c1.split(",");
+  const x = d || h;
+  const j = x
+    ? "," +
+      (!d
+        ? h
+        : !h
+          ? d
+          : r((parseFloat(d) * P + parseFloat(h) * p) * 1000) / 1000 + ")")
+    : ")";
+  return (
+    "rgb" +
+    (x ? "a(" : "(") +
+    r(
+      (P * i(a[3] === "a" ? a.slice(5) : a.slice(4)) ** 2 +
+        p * i(e[3] === "a" ? e.slice(5) : e.slice(4)) ** 2) **
+        0.5,
+    ) +
+    "," +
+    r((P * i(b) ** 2 + p * i(f) ** 2) ** 0.5) +
+    "," +
+    r((P * i(c) ** 2 + p * i(g) ** 2) ** 0.5) +
+    j
+  );
 }
 
+// ============================================================
+// All known element symbols (for validation)
+// ============================================================
+const allElementSymbols = [];
+for (let i = 1; i < elementsInfo.length; i++) {
+  allElementSymbols.push(elementsInfo[i].sym);
+}
+
+// ============================================================
+// Rendering order for proper CSS Grid auto-placement.
+// Elements placed into the grid in this order so that main
+// body rows fill first, then lanthanides/actinides below.
+// ============================================================
+const renderOrder = [
+  // Main body: periods 1-6 (H through Ba), elements 1-56
+  ...Array.from({ length: 56 }, (_, i) => i + 1),
+  // Skip lanthanides (57-71), continue with Hf-Ra (72-88)
+  ...Array.from({ length: 17 }, (_, i) => i + 72),
+  // Skip actinides (89-103), continue with Rf-Og (104-118)
+  ...Array.from({ length: 15 }, (_, i) => i + 104),
+  // Lanthanides (57-71)
+  ...Array.from({ length: 15 }, (_, i) => i + 57),
+  // Actinides (89-103)
+  ...Array.from({ length: 15 }, (_, i) => i + 89),
+];
+
+// ============================================================
+// Build the full table HTML and attach event listeners
+// ============================================================
 function render({ model, el }) {
-  rerenderScratch({ el, model });
+  // ---- Re-render when model changes ----
+  function fullRender() {
+    rerender({ el, model });
+  }
 
-  model.on('change:selected_elements', () => {
-    rerenderScratch({ el, model });
+  model.on("change:selected_elements", fullRender);
+  model.on("change:disabled_elements", fullRender);
+  model.on("change:display_names_replacements", fullRender);
+  model.on("change:unselected_color", fullRender);
+  model.on("change:selected_colors", fullRender);
+  model.on("change:width", fullRender);
+  model.on("change:disabled", fullRender);
+
+  model.on("change:border_color", () => {
+    const color = model.get("border_color");
+    const entries = el.querySelectorAll(".pt-element");
+    for (const entry of entries) {
+      entry.style.borderColor = color;
+    }
   });
 
-  model.on('change:disabled_elements', () => {
-    rerenderScratch({ el, model });
-  });
-
-  model.on('change:display_names_replacements', () => {
-    rerenderScratch({ el, model });
-  });
-
-  model.on('change:border_color', () => {
-    renderBorder(model.get('border_color'));
-  });
-
-  model.on('change:width', () => {
-    rerenderScratch({ el, model });
-  });
-
-  model.on('change:disabled', () => {
-    rerenderScratch({ el, model });
-  });
+  // Initial render
+  fullRender();
 }
 
-function rerenderScratch({ el, model }) {
-  //         Re-render full widget when the list of selected elements
-  //         changed from python
-  const selectedElements = model.get('selected_elements');
-  const disabledElements = model.get('disabled_elements');
-  const disabledColor = model.get('disabled_color');
-  const unselectedColor = model.get('unselected_color');
-  const selectedColors = model.get('selected_colors');
-  const newSelectedColors = selectedColors.slice();
-  const elementWidth = model.get('width');
-  const borderColor = model.get('border_color');
+// ============================================================
+// Re-render the entire widget
+// ============================================================
+function rerender({ el, model }) {
+  const selectedElements = model.get("selected_elements");
+  const disabledElements = model.get("disabled_elements");
+  const disabledColor = model.get("disabled_color");
+  const unselectedColor = model.get("unselected_color");
+  const selectedColors = model.get("selected_colors");
+  const elementWidth = model.get("width");
+  const borderColor = model.get("border_color");
+  const displayNamesReplacements = model.get("display_names_replacements");
+  const states = model.get("states");
+  const disabled = model.get("disabled");
 
-  let newSelectedElements = [];
-  const newSelectedStates = [];
+  // ---- Clean up selected_elements ----
+  let newSelectedElements = {};
+  const newSelectedStates = {};
 
-  if ('Du' in selectedElements) {
-    return;
-  }
-
-  for (const key in selectedElements) {
-    newSelectedElements.push(key);
-    newSelectedStates.push(selectedElements[key]);
-  }
-
-  if (newSelectedElements.length !== newSelectedStates.length) {
-    return;
-  }
-
-  //         Here I want to clean up the two elements lists, to avoid
-  //         to have unknown elements in the selectedElements, and
-  //         to remove disabled Elements from the selectedElements list.
-  //         I use s variable to check if anything changed, so I send
-  //         back the data to python only if needed
-
-  const selectedElementsLength = newSelectedElements.length;
-  //         Remove disabled elements from the selectedElements list
-  newSelectedElements = _.difference(newSelectedElements, disabledElements);
-  //         Remove unknown elements from the selectedElements list
-  newSelectedElements = _.intersection(newSelectedElements, elementList);
-
-  const changed = newSelectedElements.length !== selectedElementsLength;
-
-  //         call the update (to python) only if I actually removed/changed
-  //         something
-  if (changed) {
-    //             Make a copy before setting
-    // while (newSelectedElements.length > newSelectedStates.length){
-    //   newSelectedStates.push(0);
-    // };
-
+  if (!("Du" in selectedElements)) {
     for (const key in selectedElements) {
-      if (!newSelectedElements.includes(key)) {
-        delete selectedElements[key];
-      }
+      newSelectedElements[key] = selectedElements[key];
+      newSelectedStates[key] = selectedElements[key];
+    }
+  }
+
+  const elemKeys = Object.keys(newSelectedElements);
+  let changed = false;
+
+  // Remove disabled elements from selection
+  for (const de of disabledElements) {
+    if (de in newSelectedElements) {
+      delete newSelectedElements[de];
+      changed = true;
+    }
+  }
+
+  // Remove unknown elements from selection
+  for (const key of elemKeys) {
+    if (!allElementSymbols.includes(key)) {
+      delete newSelectedElements[key];
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    model.set("selected_elements", newSelectedElements);
+    model.save_changes();
+  }
+
+  // ---- Build the DOM ----
+  // Clear existing content
+  el.innerHTML = "";
+
+  const container = document.createElement("div");
+  container.className = "periodic-table-body";
+  container.style.setProperty("--element-box-size", elementWidth);
+
+  // Create all 118 element cells in render order
+  for (const num of renderOrder) {
+    const info = elementsInfo[num];
+    const symbol = info.sym;
+    const elClass = info.cls;
+
+    const cell = document.createElement("div");
+    cell.className = `pt-element pt-elem-${num}`;
+
+    // Add lanthanide/actinide class for margin spacing
+    if (num >= 57 && num <= 71) {
+      cell.classList.add("pt-lanthanide");
+    } else if (num >= 89 && num <= 103) {
+      cell.classList.add("pt-actinide");
     }
 
-    model.set('selected_elements', selectedElements);
-    model.save_changes();
-  }
+    // ---- Determine selection state ----
+    const isSelected = symbol in newSelectedElements;
+    const isDisabled =
+      disabledElements.includes(symbol) || disabled;
 
-  //         Render the full widget using the template
-  el.innerHTML =
-    '<div class="periodic-table-body">' +
-    tableTemplate({
-      elementTable: elementTable,
-      displayNamesReplacements: model.get('display_names_replacements'),
-      selectedElements: newSelectedElements,
-      disabledElements: disabledElements,
-      disabledColor: disabledColor,
-      unselectedColor: unselectedColor,
-      selectedColors: newSelectedColors,
-      selectedStates: newSelectedStates,
-      elementWidth: elementWidth,
-      borderColor: borderColor,
-      disabled: model.get('disabled'),
-    }) +
-    '</div>';
+    if (isDisabled && !isSelected) {
+      cell.classList.add("pt-element-disabled");
+    }
 
-  $(() => {
-    $('.periodic-table-entry').on('click', (event) => {
-      toggleElement({ el, model, event });
-    });
-  });
-};
+    if (isSelected) {
+      const state = newSelectedElements[symbol];
+      cell.classList.add(`pt-element-state${state}`);
+    }
 
-function toggleElement({ el, model, event }) {
-  const classNames = _.map(event.target.classList, (a) => {
-    return a;
-  });
-  const elementName = _.chain(classNames)
-    .filter((a) => {
-      return a.startsWith('element-');
-    })
-    .map((a) => {
-      return a.slice('element-'.length);
-    })
-    .first()
-    .value();
-
-  const isOn = _.includes(classNames, 'elementOn');
-  const isDisabled = _.includes(classNames, 'periodic-table-disabled');
-  // If this button is disabled, do not do anything
-  // (Actually, this function should not be triggered if the button
-  // is disabled, this is just a safety measure)
-
-  const states = model.get('states');
-  const disabled = model.get('disabled');
-
-  if (disabled) {
-    return;
-  };
-
-  // Check if we understood which element we are
-  if (typeof elementName !== 'undefined') {
-    const currentList = model.get('selected_elements');
-    // NOTE! it is essential to duplicate the list,
-    // otherwise the value will not be updated.
-
-    let newList = [];
-    const newStatesList = [];
-
-    for (const key in currentList) {
-      newList.push(key);
-      newStatesList.push(currentList[key]);
-    };
-
-    const num = newList.indexOf(elementName);
-
-    if (isOn) {
-      // remove the element from the selected_elements
-
-      if (newStatesList[num] < states - 1) {
-        newStatesList[num]++;
-        currentList[elementName] = newStatesList[num];
-      } else {
-        newList = _.without(newList, elementName);
-        newStatesList.splice(num, 1);
-        delete currentList[elementName];
-        // Swap CSS state
-        event.target.classList.remove('elementOn');
-      }
-    } else if (!isDisabled) {
-      // add the element from the selected_elements
-      newList.push(elementName);
-      newStatesList.push(0);
-      currentList[elementName] = 0;
-      // Swap CSS state
-      event.target.classList.add('elementOn');
+    // ---- Compute background color ----
+    // Default unselected_color is '' (empty), meaning: use class-based coloring.
+    // If the user sets a non-empty unselected_color, use it uniformly.
+    let bgColor;
+    if (isSelected) {
+      bgColor = selectedColors[newSelectedElements[symbol]] || selectedColors[0];
+    } else if (unselectedColor) {
+      // User set a custom unselected color — use it uniformly
+      bgColor = unselectedColor;
     } else {
-      return;
-    };
+      // Default: class-based color blended toward neutral grey
+      const classColor = elementClassColors[elClass] || elementClassColors["X"];
+      bgColor = RGB_Log_Blend(0.5, classColor, "rgb(220, 220, 220)");
+    }
+    cell.style.backgroundColor = bgColor;
+    cell.style.borderColor = borderColor;
 
-    // Update the model (send back data to python)
-    // I have to make some changes, since there is some issue
-    // for Dict in Traitlets, which cannot trigger the update
-    model.set('selected_elements', { Du: 0 });
-    model.set('selected_elements', currentList);
-    model.save_changes();
-  };
-};
+    // ---- Build cell content ----
+    // Atomic number
+    const numDiv = document.createElement("div");
+    numDiv.className = "elem_num";
+    numDiv.textContent = num;
+    cell.appendChild(numDiv);
 
-function renderBorder(color) {
-  const a = document.getElementsByClassName('periodic-table-entry');
+    // Symbol (or replacement)
+    const symDiv = document.createElement("div");
+    symDiv.className = "elem_sym";
+    if (symbol in displayNamesReplacements) {
+      symDiv.innerHTML = displayNamesReplacements[symbol];
+    } else {
+      symDiv.textContent = symbol;
+    }
+    cell.appendChild(symDiv);
 
-  for (let i = 0; i < a.length; i++) {
-    a[i].style.border = '1px solid ' + color;
+    // ---- Click handler (ignore disabled elements) ----
+    if (!disabled) {
+      cell.addEventListener("click", () => {
+        if (disabledElements.includes(symbol)) return;
+
+        const currentList = model.get("selected_elements");
+        const newList = {};
+
+        // Copy current selection
+        for (const k in currentList) {
+          newList[k] = currentList[k];
+        }
+
+        if (symbol in newList) {
+          // Cycle state: increment or remove
+          const currentState = newList[symbol];
+          if (currentState < states - 1) {
+            newList[symbol] = currentState + 1;
+          } else {
+            delete newList[symbol];
+          }
+        } else {
+          // Add with state 0
+          newList[symbol] = 0;
+        }
+
+        // Trigger update (use Du trick for Dict change detection)
+        model.set("selected_elements", { Du: 0 });
+        model.set("selected_elements", newList);
+        model.save_changes();
+      });
+    }
+
+    container.appendChild(cell);
   }
-};
+
+  el.appendChild(container);
+}
 
 export default { render };

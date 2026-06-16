@@ -3,10 +3,7 @@
 		"dev": "npm run build -- --sourcemap=inline --watch",
 		"build": "esbuild js/widget.js --minify --format=esm --bundle --outdir=src/widget_periodictable/static"
 	},
-	"dependencies": {
-		"underscore": "^1.13.6",
-		"jquery": "^3.7.1"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"esbuild": "^0.20.0",
 		"eslint": "^8.57.0",

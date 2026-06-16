@@ -22,12 +22,12 @@ class PTableWidget(anywidget.AnyWidget):
     disabled_elements = traitlets.List([]).tag(sync=True)
     display_names_replacements = traitlets.Dict({}).tag(sync=True)
     disabled_color = traitlets.Unicode('gray').tag(sync=True)
-    unselected_color = traitlets.Unicode('pink').tag(sync=True)
+    unselected_color = traitlets.Unicode('').tag(sync=True)
     states = traitlets.Int(1).tag(sync=True)
     selected_colors = traitlets.List([]).tag(sync=True)
-    border_color = traitlets.Unicode('#cc7777').tag(sync=True)
+    border_color = traitlets.Unicode('#999999').tag(sync=True)
     disabled = traitlets.Bool(False, help="Enable or disable user changes.").tag(sync=True)
-    width = traitlets.Unicode('38px').tag(sync=True)
+    width = traitlets.Unicode('40px').tag(sync=True)
     allElements = traitlets.List(CHEMICAL_ELEMENTS).tag(sync=True)
 
     _STANDARD_COLORS = [
@@ -55,18 +55,24 @@ class PTableWidget(anywidget.AnyWidget):
         border_color=None,
         width=None,
         layout=None,
+        display_names_replacements=None,
+        disabled=False,
     ):
         super(PTableWidget, self).__init__()
         self.states = states if states else 1
         self.selected_elements = selected_elements if selected_elements else {}
         self.disabled_elements = disabled_elements if disabled_elements else []
         self.disabled_color = disabled_color if disabled_color else 'gray'
-        self.unselected_color = unselected_color if unselected_color else 'pink'
+        self.unselected_color = unselected_color if unselected_color else ''
         self.selected_colors = (
             selected_colors if selected_colors else self._STANDARD_COLORS
         )
-        self.border_color = border_color if border_color else '#cc7777'
-        self.width = width if width else '38px'
+        self.border_color = border_color if border_color else '#999999'
+        self.width = width if width else '40px'
+        self.display_names_replacements = (
+            display_names_replacements if display_names_replacements else {}
+        )
+        self.disabled = disabled
 
         if layout is not None:
             self.layout = layout

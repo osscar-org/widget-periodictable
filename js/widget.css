@@ -1,68 +1,149 @@
-.periodic-table-entry {
-    border: 1px solid;
-    border-color: #cc7777;
-    border-radius: 3px;
-    width: 38px;
-    height: 38px;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    background-color: #ffaaaa;
+/* ============================================================
+   Periodic Table Widget — mc3d-style CSS Grid layout
+   ============================================================ */
+
+/* ---- CSS Variables ---- */
+:root {
+  --element-box-size: 40px;
 }
 
-.periodic-table-disabled {
-    border-radius: 3px;
-    width: 38px;
-    height: 38px;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    background-color: #999999;
-}
-
-.periodic-table-empty {
-    border: 0px;
-    width: 38px;
-    height: 38px;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.periodic-table-row {
-    display: table-row;
-}
-
+/* ---- Container ---- */
 .periodic-table-body {
-    display: table; 
-    border-spacing: 4px;
-    margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(17, auto) 1fr;
+  /* Rows are auto-generated; up to 10 rows for main body + 2 for f-block */
+  grid-template-rows: repeat(10, auto) 1fr;
+  margin: 10px auto;
+  width: fit-content;
+  /* Default border-spacing equivalent */
+  gap: 2px;
 }
 
-.periodic-table-entry:hover {
-    background-color: #cc7777;
-    transform: scale(1.4);
+/* ---- Element cell ---- */
+.pt-element {
+  height: var(--element-box-size);
+  width: var(--element-box-size);
+  position: relative;
+  border: 1px solid #999;
+  border-radius: 2px;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
-.periodic-table-entry.elementOn {
-    background-color: #aaaaff;
-    border: 1px solid #7777cc;
-    border-radius: 4px;
+/* ---- Atomic number ---- */
+.elem_num {
+  font-size: calc(0.3 * var(--element-box-size));
+  line-height: 1;
 }
 
-
-.periodic-table-entry.elementOn:hover {
-    background-color: #7777cc;
-    border: 1px solid #7777cc;
-    border-radius: 4px;
+/* ---- Element symbol ---- */
+.elem_sym {
+  font-size: calc(0.5 * var(--element-box-size));
+  line-height: 1;
+  font-weight: 400;
 }
 
+/* ---- Hover effect (non-disabled elements) ---- */
+.pt-element:not(.pt-element-disabled):hover {
+  filter: brightness(85%);
+  transform: scale(1.2);
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* ---- Disabled elements ---- */
+.pt-element-disabled {
+  filter: contrast(20%) brightness(160%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   Grid positioning — explicit column starts for elements
+   that need to skip columns in the standard periodic table
+   ============================================================ */
+
+/* He (2): placed in last column (18) */
+.pt-elem-2 {
+  grid-column-start: 18;
+}
+
+/* B (5): placed in column 13, skipping the transition metal gap */
+.pt-elem-5 {
+  grid-column-start: 13;
+}
+
+/* Al (13): placed in column 13, skipping the transition metal gap */
+.pt-elem-13 {
+  grid-column-start: 13;
+}
+
+/* La (57): start lanthanide row at column 3 */
+.pt-elem-57 {
+  grid-column-start: 3;
+}
+
+/* Ac (89): start actinide row at column 3 */
+.pt-elem-89 {
+  grid-column-start: 3;
+}
+
+/* Hf (72): push past the La/* placeholder at column 3 */
+.pt-elem-72 {
+  grid-column-start: 4;
+}
+
+/* Rf (104): push past the Ac/* placeholder at column 3 */
+.pt-elem-104 {
+  grid-column-start: 4;
+}
+
+/* ---- Lanthanide / Actinide row spacing ---- */
+.pt-lanthanide {
+  margin-top: 8px;
+}
+
+.pt-actinide {
+  margin-top: 4px;
+}
+
+/* ---- Noselect (unselectable text) ---- */
 .noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome and Opera */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* ============================================================
+   Responsive media queries
+   ============================================================ */
+
+@media screen and (max-width: 800px) {
+  :root {
+    --element-box-size: 4.5vw;
   }
+}
+
+@media screen and (max-width: 650px) {
+  .elem_sym {
+    font-size: calc(0.6 * var(--element-box-size));
+  }
+  .elem_num {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  :root {
+    --element-box-size: 5vw;
+  }
+  .pt-element {
+    margin: 0px;
+  }
+}

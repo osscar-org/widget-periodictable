@@ -27,7 +27,7 @@ class test_widget():
     time.sleep(3)
 
     try:
-      self.driver.find_element(By.CLASS_NAME, 'element-Si')
+      self.driver.find_element(By.CLASS_NAME, 'pt-elem-14')
       print("Element Si is fund!")
     except:
       raise Exception("Element Si is NOT found!!!")
@@ -38,7 +38,7 @@ class test_widget():
     time.sleep(3)
     self.driver.save_screenshot("widget-01.png")
 
-    element = self.driver.find_element(By.CLASS_NAME, 'element-Sn')
+    element = self.driver.find_element(By.CLASS_NAME, 'pt-elem-50')
     element.click()
     time.sleep(3)
     self.driver.save_screenshot("widget-02.png")
