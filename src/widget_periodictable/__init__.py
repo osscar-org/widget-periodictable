@@ -108,7 +108,7 @@ class PTableWidget(anywidget.AnyWidget):
     @validate('selected_elements')
     def _selectedElements_change(self, proposal):
         for x, y in proposal['value'].items():
-            if x not in self.allElements and x != 'Du':
+            if x not in self.allElements:
                 raise TraitError('Element not found')
             if not isinstance(y, int) or y not in range(self.states):
                 raise TraitError('State value is wrong')
@@ -116,9 +116,14 @@ class PTableWidget(anywidget.AnyWidget):
 
     @observe('disabled_elements')
     def _disabledList_change(self, change):
+        selected_elements = deepcopy(self.selected_elements)
+        changed = False
         for i in change['new']:
-            if i in self.selected_elements:
-                del self.selected_elements[i]
+            if i in selected_elements:
+                del selected_elements[i]
+                changed = True
+        if changed:
+            self.selected_elements = selected_elements
 
     @observe('states')
     def _states_change(self, change):

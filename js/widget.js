@@ -250,14 +250,9 @@ function rerender({ el, model }) {
   const disabled = model.get("disabled");
 
   // ---- Clean up selected_elements ----
-  let newSelectedElements = {};
-  const newSelectedStates = {};
-
-  if (!("Du" in selectedElements)) {
-    for (const key in selectedElements) {
-      newSelectedElements[key] = selectedElements[key];
-      newSelectedStates[key] = selectedElements[key];
-    }
+  const newSelectedElements = {};
+  for (const key in selectedElements) {
+    newSelectedElements[key] = selectedElements[key];
   }
 
   const elemKeys = Object.keys(newSelectedElements);
@@ -382,8 +377,6 @@ function rerender({ el, model }) {
           newList[symbol] = 0;
         }
 
-        // Trigger update (use Du trick for Dict change detection)
-        model.set("selected_elements", { Du: 0 });
         model.set("selected_elements", newList);
         model.save_changes();
       });
